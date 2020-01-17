@@ -1,0 +1,81 @@
+<?php
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_CancelOrder
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+?>
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * Popup template
+ *
+ * @var $block \Bss\CancelOrder\Block\Template
+ */
+?>
+<?php
+    $helper = $block->getHelper();
+    $notice = $helper->getNotice();
+    $customerId = $helper->getCustomerId();
+?>
+<div class="cd-popup" role="alert">
+    <div class="cd-popup-container">
+        <?php $imageUrl = 'Bss_CancelOrder::images/cancelorder.png'; ?>
+        <img src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl($imageUrl); ?>" />
+        <form action="<?php /* @escapeNotVerified */ echo $block->getUrl('cancelorder'); ?>"
+            method="POST"
+            id="cancel-form">
+            <p id="elementQuestion" >
+                <?php /* @escapeNotVerified */ echo __('Are you sure to cancel selected order?'); ?>
+                <br />
+                <?php /* @escapeNotVerified */ echo __('ORDER #'); ?>  
+                <b>
+                    <input type="text" name="id" id="orderId" class="order-id" readonly="readonly" value="">
+                    <input type="hidden" name="customer_id" value="<?php /* @escapeNotVerified */ echo $customerId?>">
+                </b>
+            </p>
+
+            <textarea name="cancel_comment"
+                cols="25"
+                rows="5"
+                placeholder="<?php /* @escapeNotVerified */
+                    echo __('Why do you want to cancel this order?'); ?>"></textarea>
+
+            <?php if ($notice && $notice != '') : ?>
+            <p id="elementNotice">
+                <b>
+                    <span>*</span>
+                    <?php /* @escapeNotVerified */ echo __('NOTICE: '); ?>
+                    <?php /* @escapeNotVerified */ echo $notice; ?>
+                </b>
+            </p>
+            <?php endif; ?>
+
+            <div class="cd-buttons">
+               <li><a href="#" class="submitform"><?php /* @escapeNotVerified */ echo __('Yes'); ?></a></li>
+               <li><a href="#" class="closepopup"><?php /* @escapeNotVerified */ echo __('No'); ?></a></li>
+           </div>
+       </form>
+       <a href="#" class="cd-popup-close img-replace closepopup"></a>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        ".cd-popup-trigger": {
+            "Bss_CancelOrder/js/popup": {
+            }
+        }
+    }
+</script>

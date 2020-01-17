@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/Milople/Personalizedcool/view/frontend/web/js/fonts.js

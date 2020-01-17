@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/Label/view/adminhtml/web/js/amlabel.js

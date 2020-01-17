@@ -1,0 +1,67 @@
+<?php
+
+$objManager = \Magento\Framework\App\ObjectManager::getInstance();
+$request=$this->getRequest()->getParams();
+$id=$request["id"];
+$product = $objManager->get('Magento\Catalog\Model\Product')->load($id);
+$productType = $product->getTypeID();
+$helper=$objManager->get('Emipro\CodExtracharge\Helper\Data');
+$customerSession = $objManager->get('Magento\Customer\Model\Session');
+
+$paymentMethod = $helper->getConfig('payment/cashondelivery/active');
+$enable = $helper->getConfig('payment/cashondelivery/activebaseonrule');
+$codapply = $helper->getConfig('payment/cashondelivery/applycodextracharge');
+if($productType=="downloadable" || $paymentMethod == 0 || $enable == 0 || $codapply == 0)
+{
+	return true;
+}
+	$cod_charges=$objManager->create('Emipro\CodExtracharge\Helper\Data')->perproductCodcharges($id);
+	$baseCurrencyCode= $objManager->create('\Magento\Store\Model\StoreManagerInterface')->getStore()->getBaseCurrencyCode();
+	$currentCurrencyCode =$objManager->create('\Magento\Store\Model\StoreManagerInterface')->getStore()->getCurrentCurrency()->getCode();
+
+
+?>
+
+<?php
+if (!empty($cod_charges)) {
+foreach($cod_charges as $cod_charge){
+if($cod_charge["cost"]==0 && $cod_charge["status"]==1)
+{?>
+	<div style="margin:3% 0%">Free Cash On Delivery.</div>
+	<?php
+return true;
+}
+?>
+<?php
+$final_amount=$cod_charge["cost"];
+    $objManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $priceHelper = $objManager->create('Magento\Framework\Pricing\Helper\Data'); //
+    $formattedPrice = $priceHelper->currency($final_amount, true, false);
+?>
+
+<?php
+    if(!empty($cod_charge["cost"]) && $cod_charge["cost"] > 0): ?>
+	<div style="margin:3% 0%;display: none;" class="codText">Cash On Delivery available with extra charge <strong><?php echo $formattedPrice." ".$cod_charge["optionText"] ?></strong> </div>
+<?php endif;
+}
+}
+?>
+
+<script type="text/javascript">
+    require(['jquery'], function($){
+        jQuery.ajax({
+            url: 'codextracharge/index/index',
+            type: 'POST',
+            dataType: "json",
+            complete: function (data) {
+                var response = jQuery.parseJSON(data.responseText);
+                if(response.specificCountCond != 1){
+                	$(".codText").css("display","none");
+                }
+                else{
+                	$(".codText").css("display","block");
+                }
+            },
+        });
+    });
+</script>

@@ -1,0 +1,64 @@
+<?php
+/**
+ * Copyright © 2017 Linchpin. All rights reserved.
+ */
+
+namespace Linchpin\AdvancedSorting\Plugin\Product\ProductList;
+
+/**
+ * Class Toolbar
+ * @package Linchpin\AdvancedSorting\Plugin\Product\ProductList
+ */
+class Toolbar
+{
+	/**
+	 * Plugin
+	 *
+	 * @param \Magento\Catalog\Block\Product\ProductList\Toolbar $subject
+	 * @param \Closure $proceed
+	 * @param \Magento\Framework\Data\Collection $collection
+	 * @return \Magento\Catalog\Block\Product\ProductList\Toolbar
+	 */
+	public function aroundSetCollection(
+		\Magento\Catalog\Block\Product\ProductList\Toolbar $subject,
+		\Closure $proceed,
+		$collection
+	) {
+		$currentOrder = $subject->getCurrentOrder();
+		$result = $proceed($collection);
+
+		if ($currentOrder) {
+			if ($currentOrder == 'price_desc') {
+				$subject->getCollection()->setOrder('price', 'desc');
+			} elseif ($currentOrder == 'price_asc') {
+				$subject->getCollection()->setOrder('price', 'asc');
+			} elseif ($currentOrder == 'name_az') {
+				$subject->getCollection()->setOrder('name', 'asc');
+			} elseif ($currentOrder == 'name_za') {
+				$subject->getCollection()->setOrder('name', 'desc');
+			} elseif ($currentOrder == 'bestseller') {
+				$collection->getSelect()->joinLeft( 
+                'sales_order_item', 
+                'e.entity_id = sales_order_item.product_id', 
+                array('qty_ordered'=>'SUM(sales_order_item.qty_ordered)')) 
+                ->group('e.entity_id') 
+                ->order('qty_ordered '.$this->getCurrentDirectionReverse());
+			}
+			//$this->_collection = $collection;
+			
+
+		}
+
+		return $result;
+	}
+	
+	public function getCurrentDirectionReverse() {
+		if ($this->getCurrentDirection() == 'asc') {
+			return 'desc';
+		} elseif ($this->getCurrentDirection() == 'desc') {
+			return 'asc';
+		} else {
+			return $this->getCurrentDirection();
+		}
+	}
+}

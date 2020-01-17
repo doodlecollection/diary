@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/AjaxSearch/view/frontend/web/js/tm-search-ajax.js

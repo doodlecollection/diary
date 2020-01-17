@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/AjaxCatalog/view/frontend/web/js/tm-catalog-ajax.js

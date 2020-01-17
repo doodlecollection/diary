@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/AjaxCompare/view/frontend/web/js/compare-products-top-link.js

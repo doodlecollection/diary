@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:2:{s:7:"general";a:1:{s:6:"enable";s:1:"1";}s:13:"category_page";a:11:{s:9:"use_image";s:15:"thumbnail_image";s:23:"enable_image_categories";s:1:"0";s:26:"enable_image_subcategories";s:1:"0";s:13:"columns_count";s:1:"4";s:11:"image_width";s:3:"100";s:20:"amount_subcategories";s:1:"4";s:17:"amount_categories";s:1:"5";s:9:"view_more";s:1:"0";s:15:"show_after_grid";s:1:"0";s:16:"show_before_grid";s:1:"1";s:6:"enable";s:1:"0";}}

@@ -1,0 +1,267 @@
+<?php
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2017 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalized-products-m2.html
+*
+**/
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php 
+    $baseUrl=$block->getUrl(); 
+	  $baseUrl=$baseUrl.'personalizedcool/index/index';
+    $helper=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized');
+		$isRestrictedAreaDrawn=$helper->isRestrictedAreaDrawn($_product,'AddToCart');
+    $status=$helper->getConfig('personalizedcool/license_status_group/status');
+    $enableFromProduct=$_product->getAllowPersonalization();
+		$productType=$_product->getTypeId();
+		$sideCount=$helper->getSideCount($_product);
+		$isGlobalRestrictedAllowed=$helper->getConfig('personalizedcool/general_setting_group/enable_area');
+		$counterLoop = 0;
+		$personalization_mode=$helper->getConfig('personalizedcool/general_setting_group/personalization_mode');
+		$isProductHasSide = $helper->isProductHasSide($_product);
+		$width=$helper->getConfig('personalizedcool/area_setting_group/width');
+		$name_number_status = $helper->getConfig('personalizedcool/name_number_setting/name_number_status');
+		$eligible_change_quantity = 0;
+		
+?>
+<?php $buttonTitle = __('Add To Cart'); ?>
+<?php if ($_product->isSaleable()): ?>
+<div class="box-tocart">
+     <?php echo $block->getChildHtml('', true) ?>
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()): ?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label>
+            <div class="control">
+                <input type="number"
+                       name="qty"
+                       id="qty"
+                       maxlength="12"
+                       value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>"
+                       title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty"
+                       data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                       />
+            </div>
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button">
+                <span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span>
+            </button>
+		   </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php if ($block->isRedirectToCartEnabled()) : ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }
+</script>
+<?php else : ?>
+<script>
+	baseURL="<?php echo $baseUrl;?>";
+   require([
+    'jquery',
+    'mage/mage',
+    'Magento_Catalog/product/view/validation',
+    'Magento_Catalog/js/catalog-add-to-cart'
+	], function($) {
+		'use strict';
+		$('#product_addtocart_form').mage('validation', {
+			radioCheckboxClosest: '.nested',
+			submitHandler: function(form) {
+				var widget = $(form).catalogAddToCart({
+					bindSubmit: false
+				});
+				<?php if(($status && $enableFromProduct) || ($_product->getTypeId()=='personalized' && $status)): ?>
+				// Personalized Product- Start
+				<?php if(!$isRestrictedAreaDrawn || !$isGlobalRestrictedAllowed): ?>
+				// No-Restricted Area
+				//No Area Function inside the Personalized JS file
+				noArea(widget, form,baseURL);
+				<?php else : ?>
+				// Restricted Area Drawn
+				multipleArea(widget, form);
+				<?php endif;  ?>
+				<?php else :?>
+				// Without Enabling the personalized product.s		
+				widget.catalogAddToCart('submitForm', $(form));
+				return false;
+				<?php endif; ?> // Main If status
+			} //Submit Handler
+		}); //Add to cart form
+	});
+	multipleArea = function(widget, form) {
+		var zoomCanvas = {};
+		var zcanvas = {};
+		var imgUrl = {};
+		var sideCount = <?php echo $sideCount; ?>;
+		<?php
+							 $numItems = count($_product->getMediaGalleryImages());
+							 $lastItem = $numItems - 1;
+							 foreach ($_product->getMediaGalleryImages() as $image) {
+								if($helper->isImageHasArea($_product->getId(),$image->getId())=='allowed'){
+								$id=$image->getId();
+								
+							?>
+		if (sideCount == 1) {
+			imgUrl[<?php echo $id ?>] = document.getElementById("imageDiv").src;
+		} else {
+			imgUrl[<?php echo $id; ?>] = jQuery("#image-" + <?php echo $id; ?>).attr("data-main-image-src");
+		}
+		zcanvas[<?php echo $id; ?>] = jQuery('#product-zoom-canvas-' + <?php echo $id; ?>);
+		zcanvas[<?php echo $id; ?>].innerHTML = '';
+		jQuery('#product-zoom-container-' + <?php echo $id; ?>).empty();
+		jQuery('#product-zoom-container-' + <?php echo $id; ?>).append(zcanvas[<?php echo $id; ?>]);
+		zoomCanvas[<?php echo $id; ?>] = new fabric.Canvas('product-zoom-canvas-' + <?php echo $id; ?>);
+		console.log(imgUrl[<?php echo $id; ?>]);																									 
+		zoomCanvas[<?php echo $id; ?>].setBackgroundImage(imgUrl[<?php echo $id; ?>], zoomCanvas[<?php echo $id; ?>].renderAll.bind(zoomCanvas[<?php echo $id; ?>]));
+		canvasObjects[<?php echo $id; ?>].deactivateAll();
+		canvasObjects[<?php echo $id; ?>].renderAll();
+		setTimeout(function() {
+			var render_area_left = parseFloat(document.getElementById("drawingArea-" + [<?php echo $id; ?>]).style.left);
+			if (window.matchMedia('(max-width: 500px)').matches)
+			{
+				var screen_width = screen.width;
+				var img_width = '<?php echo $width; ?>';
+				var render_aspect_ratio = parseFloat(img_width/screen_width);
+				render_area_left = parseFloat('<?php echo $helper->getCoordinates($_product->getId(),$image->getId(),'X1');?>');
+				render_area_left = render_area_left * render_aspect_ratio;
+				if(render_area_left > ((img_width * render_aspect_ratio)-img_width))
+				{
+					render_area_left = parseFloat('<?php echo $helper->getCoordinates($_product->getId(),$image->getId(),'X1');?>');
+				}
+			}
+			//Image Generation
+			fabric.Image.fromURL(canvasObjects[<?php echo $id; ?>].toDataURL(), function(oImg) {
+				zoomCanvas[<?php echo $id; ?>].add(oImg.set({
+					left: render_area_left,
+					top: parseInt(document.getElementById("drawingArea-" + [<?php echo $id; ?>]).style.top)
+				}));
+				// Pushing Image into Array
+				var imagearray = [];
+				zoomCanvas[<?php echo $id; ?>].renderAll();
+				zoomCanvas[<?php echo $id; ?>].calcOffset();
+				imagearray.push(zoomCanvas[<?php echo $id; ?>].toDataURL("image/png"));
+				if (canvasObjects[<?php echo $id; ?>].getObjects().length >= 1) {
+					imagearray.push(canvasObjects[<?php echo $id; ?>].toDataURL());
+				} else {
+					imagearray.push("blank");
+				}
+				// Get the img object.
+				jQuery.ajax({
+					type: 'POST',
+					url: "<?php echo $baseUrl; ?>",
+					data: {
+						'imagedata[]': imagearray
+					},
+					beforeSend: function() {
+						jQuery('#product-addtocart-button').find('span').text("Adding...");
+						jQuery('#product-addtocart-button').addClass('disabled');
+					},
+					success: function(result) {
+						var imageElement = sideCount == 1 ? document.getElementById("image_html") : document.getElementById("image-" + [<?php echo $id; ?>]);
+						imageElement.value = result;
+						<?php if($lastItem == $counterLoop + 1 && $sideCount > 1) { ?>
+						setTimeout(function() {
+							widget.catalogAddToCart('submitForm', jQuery(form));
+							return false;
+						}, 12000);
+						<?php } ?>
+						<?php if($lastItem == 0 || $sideCount == 1) { ?>
+						widget.catalogAddToCart('submitForm', jQuery(form));
+						return false;
+						<?php } ?>
+					}
+				}); //Ajax Call
+
+			}); //End Image Generation
+
+		}, 1000);
+		<?php } $counterLoop++; }  ?>
+	}
+</script>
+<?php endif; ?>
+<?php if($personalization_mode != 'product_page' && ($enableFromProduct || $productType == 'personalized' )):?>
+<div id="popup-model" style="display:none; background:white;">
+			<header class="modal-header">
+				<button class="done-button done-button-black small-screen"  id="testa" >Done !</button>
+				<button id="refresh_canvas_button" title="Refresh" type="button"></button>
+				<button class="action-close" data-role="closeBtn" type="button">
+          	 <span>Close</span>
+        </button>
+				<?php if($isProductHasSide && $isGlobalRestrictedAllowed) { ?>
+				<div id='thumb-container'>
+					<ul class="owl-carousel owl-theme product-thumbs">
+						<?php
+							$i=0;
+							foreach ($_product->getMediaGalleryImages()  as $image) {
+								$imageUrl = $image->getUrl();
+								if($helper->isImageHasArea($_product->getId(),$image->getId())=="allowed"){
+						?>
+								<li class='item'>
+									<a id="side-<?php echo $i;?>" data-main-image-src="<?php echo $imageUrl ?>" data-main-canvas-id="<?php echo $image->getId() ?>"  >
+										 <img src="<?php echo $imageUrl ?>" sort-order="0" title="" style="width:50px; height:60px;cursor:pointer;"   />
+									</a>
+								</li>
+								<?php } $i++; }//Foreach ?>
+					</ul>
+					<div>
+				<?php } //IF ?>
+			</header>
+			<form id="enquiry_form">
+				<?php echo $this->getLayout()->createBlock("Milople\Personalizedcool\Block\Product\View\Type\Product")->setTemplate("Milople_Personalizedcool::product/view/popup-gallery.phtml")->toHtml(); ?>
+			</form>
+			<script type="text/javascript">
+				require(['jquery'],function($){
+					$(document).ready(function() {
+              $('.owl-carousel').owlCarousel({
+									loop: false,
+									dots: false,
+									autoplay:false,
+									autoWidth:true,
+									responsiveClass: true,
+									navText : ['<div class="arrow-left"></div>','<div class="arrow-right"></div>'],
+									responsive: {
+										0: {
+											items: 1,
+											nav: true,
+											touchDrag : false,
+     								  mouseDrag : false
+										},
+										600: {
+											items: 3,
+											nav: false,
+											touchDrag : false,
+     								  mouseDrag : false
+										},
+										1000: {
+											items: 4,
+											nav: true,
+											loop: false,
+											margin: 20,
+											touchDrag : false,
+     								  mouseDrag : false
+										}
+               		 }
+              })
+            })
+				});
+		</script>
+</div>
+<?php endif; ?>

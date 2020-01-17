@@ -1,0 +1,47 @@
+<?php /** * * Do not edit or add to this file if you wish to upgrade the module to newer * versions in the future. If you wish to customize the module for your * needs please contact us to https://www.milople.com/contact-us.html * * @category Ecommerce * @package Milople_Personlized * @copyright Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved. * @url https://www.milople.com/magento2-extensions/personalizedcool-products-m2.html * **/ $_item = $block->getItem(); $fileName=$_item->getBuyRequest()->getImageHtml(); $fileNameCheck = $fileName; if($fileName!=''){ $personalized=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized'); $fileName=$personalized->getImageMediaUrl($fileName); $status=$personalized->getConfig('personalizedcool/license_status_group/status'); } $product = $_item->getProduct(); $id=$_item->getId(); $isVisibleProduct = $product->isVisibleInSiteVisibility(); $helper = $this->helper('Magento\Msrp\Helper\Data'); $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product); $counter = 1; ?> <tbody class="cart item"><tr class="item-info"><td data-th="<?php echo $block->escapeHtml(__('Item')); ?>" class="col item"><?php if ($block->hasProductUrl()):?> <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>" title="<?php echo $block->escapeHtml($block->getProductName()) ?>" tabindex="-1" class="product-item-photo"><?php else:?> <span class="product-item-photo"><?php endif;?> <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?> <?php if ($block->hasProductUrl()):?></a> <?php else: ?></span> <?php endif; ?> <div class="product-item-details"><strong class="product-item-name"><?php if ($block->hasProductUrl()):?> <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"><?php echo $block->escapeHtml($block->getProductName()) ?></a> <!-- Trigger/Open The Modal --><br/><?php if($fileNameCheck!='' && $status): ?> <a class="preview-link" data-modal="open-<?php echo $id ?>"><?php echo $block->escapeHtml(__('PREVIEW')); ?></a> <div class="modal-wrapper" data-modal="wrapper-<?php echo $id ?>"><div class="modal-content"><a class="close-modal" data-modal="close-<?php echo $id ?>">&times;</a> <div class="text"><div class="callbacks_container"><ul class="rslides" id="productpersonalized-<?php echo $id ?>"><?php foreach ($fileName as $image) { if($counter % 2 != 0 && $image!="blank") { ?> <li> <img src=<?php echo $image ?> /></li> <?php } $counter++; } ?></ul></div></div></div></div><?php endif; ?> <?php else: ?> <?php echo $block->escapeHtml($block->getProductName()) ?> <?php endif; ?></strong> <?php if ($_options = $block->getOptionList()):?> <dl class="item-options"><?php foreach ($_options as $_option) : ?> <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?> <dt><?php echo $block->escapeHtml($_option['label']) ?></dt><dd><?php if (isset($_formatedOptionValue['full_view'])): ?> <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?> <?php else: ?> <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?> <?php endif; ?></dd><?php endforeach; ?></dl><?php endif;?> <?php if ($messages = $block->getMessages()): ?> <?php foreach ($messages as $message): ?> <div class="cart item message <?php /* @escapeNotVerified */ echo $message['type'] ?>"><div><?php echo $block->escapeHtml($message['text']) ?></div></div><?php endforeach; ?> <?php endif; ?> <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?> <?php if ($addInfoBlock): ?> <?php echo $addInfoBlock->setItem($_item)->toHtml() ?> <?php endif;?></div></td><?php if ($canApplyMsrp): ?> <td class="col msrp" data-th="<?php echo $block->escapeHtml(__('Price')); ?>"><span class="pricing msrp"><span class="msrp notice"><?php /* @escapeNotVerified */ echo __('See price before order confirmation.'); ?></span> <?php $helpLinkId = 'cart-msrp-help-' . $id; ?> <a href="#" class="action help map" id="<?php /* @escapeNotVerified */ echo($helpLinkId); ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?php /* @escapeNotVerified */ echo $helpLinkId;?>","productName": "<?php /* @escapeNotVerified */ echo $product->getName(); ?>","showAddToCart": false}}'><span><?php /* @escapeNotVerified */ echo __("What's this?"); ?></span></a></span></td><?php else: ?> <td class="col price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>"><?php echo $block->getUnitPriceHtml($_item); ?></td><?php endif; ?> <td class="col qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>"><div class="field qty"><label class="label" for="cart-<?php /* @escapeNotVerified */ echo $id ?>-qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label> <div class="control qty"><input id="cart-<?php /* @escapeNotVerified */ echo $id ?>-qty" name="cart[<?php /* @escapeNotVerified */ echo $id ?>][qty]" data-cart-item-id="<?php /* @escapeNotVerified */ echo $_item->getSku() ?>" value="<?php /* @escapeNotVerified */ echo $block->getQty() ?>" type="number" size="4" title="<?php echo $block->escapeHtml(__('Qty')); ?>" class="input-text qty" maxlength="12" data-validate="{required:true,'validate-greater-than-zero':true}" data-role="cart-item-qty"/></div></div></td><td class="col subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal'));?>"><?php if ($canApplyMsrp): ?> <span class="cart msrp subtotal">--</span> <?php else: ?> <?php echo $block->getRowTotalHtml($_item); ?> <?php endif; ?></td></tr><tr class="item-actions"><td colspan="100"><div class="actions-toolbar"><?php /* @escapeNotVerified */ echo $block->getActions($_item) ?></div></td></tr></tbody><script>
+require(["jquery"], function (jQuery) {
+	
+	 <?php if($fileNameCheck!='' && $status): ?>
+        var jQuery = jQuery.noConflict();
+		jQuery(function () {
+		jQuery("#productpersonalized-<?php echo $_item->getId() ?>").responsiveSlides({
+			auto: false,
+			pager: false,
+			nav: true,
+			speed: 500,
+			namespace: "callbacks",
+			before: function () {
+			},
+			after: function () {
+			}
+		});
+
+		var Modal = (function() {
+			var modalOpen = document.querySelector('[data-modal="open-<?php echo $_item->getId() ?>"]'),
+			modalClose = document.querySelector('[data-modal="close-<?php echo $_item->getId() ?>"]'),
+			modalWrapper = document.querySelector('[data-modal="wrapper-<?php echo $_item->getId() ?>"]');
+
+			return {
+				init: function() {
+					this.open();
+					this.close();
+				},
+
+				open: function() {
+					modalOpen.onclick = function(e) {
+						e.preventDefault;
+						modalWrapper.classList.add("modal-opened");
+					}
+				},
+
+				close: function() {
+					modalClose.onclick = function(e) {
+						e.preventDefault;
+						modalWrapper.classList.remove("modal-opened");
+					}
+				}
+			}
+		}());
+		Modal.init();
+	});
+	<?php endif; ?> });</script>

@@ -1,0 +1,1 @@
+/var/www/html/index/app/design/frontend/TemplateMonster/theme078/TemplateMonster_AjaxSearch/web/js/form-mini-plugin.js

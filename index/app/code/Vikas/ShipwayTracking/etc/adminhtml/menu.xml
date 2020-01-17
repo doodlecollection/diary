@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Vikas_ShipwayTracking::shipwaytracking" title="Shipway Tracking" module="Vikas_ShipwayTracking" sortOrder="51" resource="Vikas_ShipwayTracking::shipwaytracking"/>
+      
+        <add id="Vikas_ShipwayTracking::shipwaytracking_configuration" title="Configuration" module="Vikas_ShipwayTracking" sortOrder="10" parent="Vikas_ShipwayTracking::shipwaytracking" action="adminhtml/system_config/edit/section/shipway_tracking_section" resource="Vikas_ShipwayTracking::shipwaytracking_configuration"/>
+        <add id="Vikas_ShipwayTracking::post" title="Courier Mapping" module="Vikas_ShipwayTracking" sortOrder="99" action="vikas_shipwaytracking/couriermapping" resource="Vikas_ShipwayTracking::couriermapping" parent="Vikas_ShipwayTracking::shipwaytracking"/>
+
+    </menu>
+</config>

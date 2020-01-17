@@ -1,0 +1,267 @@
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalized-products-m2.html
+*
+**/
+
+.image .action-area {
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    margin: 0;
+    position: absolute;
+    right: 2px;
+    text-decoration: none;
+    top: 4px;
+    width: 20px;
+    z-index: 3;
+    background-color: transparent;
+    border: medium none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+.image .action-area > span {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+.image .action-area:before {
+    -webkit-font-smoothing: antialiased;
+    font-size: 1.5rem;
+    line-height: inherit;
+    color: #9e9e9e;
+    content: '\e631';
+    font-family: 'Admin Icons';
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: normal;
+    overflow: hidden;
+    speak: none;
+    text-align: center;
+}
+.image .action-template {
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    margin: 0;
+    position: absolute;
+    right: 2px;
+    text-decoration: none;
+    top: 122px;
+    width: 20px;
+    z-index: 3;
+    background-color: transparent;
+    border: medium none;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+}
+.image .action-template > span {
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+}
+.image .action-template:before {
+    -webkit-font-smoothing: antialiased;
+    font-size: 1.5rem;
+    line-height: inherit;
+    color: #9e9e9e;
+    content: '';
+    font-family: 'Admin Icons';
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: normal;
+    overflow: hidden;
+    speak: none;
+    text-align: center;
+}
+.areaImageContainer {
+    text-align: center;
+}
+.jcrop-holder {
+    margin: 0 auto;
+}
+.inline-labels {
+    padding: 5px;
+}
+/* Template Implementation*/
+table {
+    font: 13px verdana;
+    font-weight: normal;
+}
+#imagecontainer > img {
+    display: block;
+    margin: 0 auto;
+}
+
+.none{
+  display:none !important;
+}
+
+.btn {
+    -moz-user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.pull-left {
+    float: left !important;
+}
+.pull-right {
+    float: right !important;
+}
+.btn-default {
+    background-color: #fff;
+    border-color: #ccc;
+    color: #333;
+}
+.form-control {
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 90%;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.table-bordered {
+    border: 1px solid #ddd;
+    width: 100%;
+}
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+    border: 1px solid #ddd;
+    padding: 7px;
+}
+#contentContainer {
+    background-color: #f2f2f2;
+    border: 5px solid black;
+    cursor: pointer;
+    height: 450px;
+    overflow: hidden;
+    width: 450px;
+    margin: 0 auto 19px;
+    position: relative;
+}
+#thing {
+    left: 50px;
+    position: relative;
+    top: 50px;
+    transition: left 0.5s cubic-bezier(0.42, -0.3, 0.78, 1.25) 0s, top 0.5s cubic-bezier(0.42, -0.3, 0.78, 1.25) 0s;
+}
+a.btn {
+    margin-top: 20px;
+    text-decoration: none;
+}
+.pull-left.place-holder {
+    margin-right: 9px;
+    margin-top: 21px;
+    padding: 5px;
+}
+
+.areaImageContainer{
+  text-align:center;
+
+}
+.jcrop-holder {
+    margin: 0 auto;
+}
+.inline-labels {
+    padding: 5px;
+}
+.name-number-styles h3 {
+    background-color: #eeeeee;
+    margin: 10px 0 10px;
+    padding: 5px;
+}
+.name-number-styles {
+    float: left;
+    margin: 20px 0 0;
+    width: 50%;
+}
+.font-size {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e6e4df;
+    color: #666666;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 0 20px 0 0;
+    padding: 5px 6px;
+}
+.font_selection {
+    font-size: 15px;
+    line-height: 1.5;
+    min-width: 250px;
+    padding: 4px;
+}
+.name-number-styles {
+    float: left;
+    margin: 27px 14px 29px 16px;
+    width: 42%;
+}
+.text-formatting-area h4 {
+    padding: 5px 15px;
+}
+#text_effects_title{
+    background: #eee none repeat scroll 0 0;
+    float: left;
+    padding: 3px 2%;
+    width: 97%;
+}
+.text_effects .field {
+    float: left;
+    width: 15%;
+}
+.radius-effect, .spacing-effect, .reverse-effect {
+    display: none;
+}
+.text_effects ul li {
+    list-style-type: none;
+}
+.text_effects ul {
+    padding:0px;
+}

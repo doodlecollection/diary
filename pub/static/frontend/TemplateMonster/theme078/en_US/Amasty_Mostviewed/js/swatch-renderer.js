@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/Mostviewed/view/frontend/web/js/swatch-renderer.js

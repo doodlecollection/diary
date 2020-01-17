@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/PromoCountdown/view/base/web/js/countdown.js

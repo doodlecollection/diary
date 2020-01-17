@@ -1,0 +1,1 @@
+/var/www/html/index/lib/web/mage/gallery/gallery.js

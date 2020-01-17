@@ -1,0 +1,46 @@
+<?php /** * Copyright © 2013-2017 Magento, Inc. All rights reserved. * See COPYING.txt for license details. */ /** @var $block \Magento\Downloadable\Block\Sales\Order\Item\Renderer\Downloadable */ $_item = $block->getItem(); $id= $_item->getId(); $fileName=$_item->getBuyRequest()->getImageHtml(); $personalized=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized'); $fileNameCheck=$fileName; $fileName=$personalized->getImageMediaUrl($fileName); $counter = 1; ?> <?php $_item = $block->getItem() ?> <tr id="order-item-row-<?php /* @escapeNotVerified */ echo $_item->getId() ?>"><td class="col name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>"><strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong> <?php if($fileNameCheck!=''): ?> <a class="preview-link" data-modal="open-<?php echo $id ?>"><?php echo $block->escapeHtml(__('PREVIEW')); ?></a> <div class="modal-wrapper" data-modal="wrapper-<?php echo $id ?>"><div class="modal-content"><a class="close-modal" data-modal="close-<?php echo $id ?>">&times;</a> <div class="text"><div class="callbacks_container"><ul class="rslides" id="productpersonalized-<?php echo $id ?>"><?php foreach ($fileName as $image) { if($counter % 2 != 0 && $image!="blank") { ?> <li> <img src=<?php echo $image ?> /></li> <?php } $counter++; } ?></ul></div></div></div></div><?php endif; ?> <script>
+           require(["jquery"], function (jQuery) {
+          <?php if($fileNameCheck!='' ): ?>
+              var jQuery = jQuery.noConflict();
+          jQuery(function () {
+          jQuery("#productpersonalized-<?php echo $_item->getId() ?>").responsiveSlides({
+            auto: false,
+            pager: false,
+            nav: true,
+            speed: 500,
+            namespace: "callbacks",
+            before: function () {
+            },
+            after: function () {
+            }
+          });
+
+          var Modal = (function() {
+            var modalOpen = document.querySelector('[data-modal="open-<?php echo $_item->getId() ?>"]'),
+            modalClose = document.querySelector('[data-modal="close-<?php echo $_item->getId() ?>"]'),
+            modalWrapper = document.querySelector('[data-modal="wrapper-<?php echo $_item->getId() ?>"]');
+
+            return {
+              init: function() {
+                this.open();
+                this.close();
+              },
+
+              open: function() {
+                modalOpen.onclick = function(e) {
+                  e.preventDefault;
+                  modalWrapper.classList.add("modal-opened");
+                }
+              },
+
+              close: function() {
+                modalClose.onclick = function(e) {
+                  e.preventDefault;
+                  modalWrapper.classList.remove("modal-opened");
+                }
+              }
+            }
+          }());
+          Modal.init();
+        });
+        <?php endif; ?> });</script></br> <?php if ($_options = $block->getItemOptions()): ?> <dl class="item-options links"><?php foreach ($_options as $_option) : ?> <dt><?php echo $block->escapeHtml($_option['label']) ?></dt><?php if (!$block->getPrintStatus()): ?> <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?> <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="tooltip wrapper"<?php endif; ?>><?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?> <?php if (isset($_formatedOptionValue['full_view'])): ?> <div class="tooltip content"><dl class="item options"><dt><?php echo $block->escapeHtml($_option['label']) ?></dt><dd><?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?></dd></dl></div><?php endif; ?></dd><?php else: ?> <dd><?php echo nl2br($block->escapeHtml((isset($_option['print_value']) ? $_option['print_value'] : $_option['value']))) ?></dd><?php endif; ?> <?php endforeach; ?></dl><?php endif; ?> <?php /* downloadable */ ?> <?php if ($links = $block->getLinks()): ?> <dl class="item-options links"><dt><?php /* @escapeNotVerified */ echo $block->getLinksTitle() ?></dt><?php foreach ($links->getPurchasedItems() as $link): ?> <dd><?php echo $block->escapeHtml($link->getLinkTitle()); ?></dd><?php endforeach; ?></dl><?php endif; ?> <?php /* EOF downloadable */ ?> <?php $addtInfoBlock = $block->getProductAdditionalInformationBlock(); ?> <?php if ($addtInfoBlock) :?> <?php echo $addtInfoBlock->setItem($_item)->toHtml(); ?> <?php endif; ?> <?php echo $block->escapeHtml($_item->getDescription()) ?></td><td class="col sku" data-th="<?php echo $block->escapeHtml(__('SKU')); ?>"><?php /* @escapeNotVerified */ echo $block->prepareSku($block->getSku()) ?></td><td class="col price" data-th="<?php echo $block->escapeHtml(__('Price')); ?>"><?php echo $block->getItemPriceHtml(); ?></td><td class="col qty" data-th="<?php echo $block->escapeHtml(__('Qty')); ?>"><ul class="items-qty"><?php if ($block->getItem()->getQtyOrdered() > 0): ?> <li class="item"><span class="title"><?php /* @escapeNotVerified */ echo __('Ordered'); ?></span> <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyOrdered()*1 ?></span></li> <?php endif; ?> <?php if ($block->getItem()->getQtyShipped() > 0): ?> <li class="item"><span class="title"><?php /* @escapeNotVerified */ echo __('Shipped'); ?></span> <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyShipped() * 1 ?></span></li> <?php endif; ?> <?php if ($block->getItem()->getQtyCanceled() > 0): ?> <li class="item"><span class="title"><?php /* @escapeNotVerified */ echo __('Canceled'); ?></span> <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyCanceled()*1 ?></span></li> <?php endif; ?> <?php if ($block->getItem()->getQtyRefunded() > 0): ?> <li class="item"><span class="title"><?php /* @escapeNotVerified */ echo __('Refunded'); ?></span> <span class="content"><?php /* @escapeNotVerified */ echo $block->getItem()->getQtyRefunded()*1 ?></span></li> <?php endif; ?></ul></td><td class="col subtotal" data-th="<?php echo $block->escapeHtml(__('Subtotal')); ?>"><?php echo $block->getItemRowTotalHtml(); ?></td></tr>

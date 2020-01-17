@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/AjaxWishlist/view/frontend/web/js/ajaxwishlist.js

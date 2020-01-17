@@ -1,0 +1,1 @@
+/var/www/html/app/code/Razorpay/Magento/view/frontend/web/js/view/payment/razorpay-payments.js

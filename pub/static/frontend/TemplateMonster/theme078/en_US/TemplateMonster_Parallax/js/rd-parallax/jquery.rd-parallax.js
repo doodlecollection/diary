@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/Parallax/view/frontend/web/js/rd-parallax/jquery.rd-parallax.js

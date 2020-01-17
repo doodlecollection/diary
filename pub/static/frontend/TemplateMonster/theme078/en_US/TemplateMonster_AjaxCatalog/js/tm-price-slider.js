@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/AjaxCatalog/view/frontend/web/js/tm-price-slider.js

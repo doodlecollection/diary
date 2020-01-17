@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/GoogleMap/view/frontend/web/js/google-map-page-plugin.js

@@ -1,0 +1,1 @@
+/var/www/html/app/code/Milople/Personalizedcool/view/adminhtml/web/js/fabric.curvedText.js

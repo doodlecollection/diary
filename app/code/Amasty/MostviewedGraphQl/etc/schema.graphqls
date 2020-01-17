@@ -1,0 +1,35 @@
+type Query {
+    groups (
+    id: Int @doc(description: "Product|Category ID"),
+    position: String @doc(description: "Block Position"),
+    type: String @doc(description: "Group Type (product, category or cart)"),
+): Related
+    @resolver(class: "Amasty\\MostviewedGraphQl\\Model\\Resolver\\Group")
+}
+type Related {
+    items: [ProductInterface] @doc(description: "An array of products"),
+}
+interface ProductInterface @typeResolver(class: "Magento\\CatalogGraphQl\\Model\\ProductInterfaceTypeResolverComposite") @doc(description: "The ProductInterface contains attributes that are common to all types of products. Note that descriptions may not be available for custom and EAV attributes.") {
+    id: Int @doc(description: "The ID number assigned to the product") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\EntityIdToId")
+    name: String @doc(description: "The product name. Customers use this name to identify the product.")
+    sku: String @doc(description: "A number or code assigned to a product to identify the product, options, price, and manufacturer")
+    special_price: Float @doc(description: "The discounted price of the product")
+    special_from_date: String @doc(description: "The beginning date that a product has a special price")
+    special_to_date: String @doc(description: "The end date that a product has a special price")
+    image: String @doc(description: "The relative path to the main image on the product page")
+    small_image: String @doc(description: "The relative path to the small image, which is used on catalog pages")
+    thumbnail: String @doc(description: "The relative path to the product's thumbnail image")
+    new_from_date: String @doc(description: "The beginning date for new product listings, and determines if the product is featured as a new product") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\NewFromTo")
+    new_to_date: String @doc(description: "The end date for new product listings") @resolver(class: "Magento\\CatalogGraphQl\\Model\\Resolver\\Product\\NewFromTo")
+    tier_price: Float @doc(description: "The price when tier pricing is in effect and the items purchased threshold has been reached")
+    image_label: String @doc(description: "The label assigned to a product image")
+    small_image_label: String @doc(description: "The label assigned to a product's small image")
+    thumbnail_label: String @doc(description: "The label assigned to a product's thumbnail image")
+    created_at: String @doc(description: "Timestamp indicating when the product was created")
+    updated_at: String @doc(description: "Timestamp indicating when the product was updated")
+    country_of_manufacture: String @doc(description: "The product's country of origin")
+    product_url: String @doc(description: "Product URL.")
+    reviews_summary: String @doc(description: "Reviews summary.")
+    add_to_cart_url: String @doc(description: "Add to cart url.")
+    add_to_wishlist: String @doc(description: "Add to wishlist params.")
+}

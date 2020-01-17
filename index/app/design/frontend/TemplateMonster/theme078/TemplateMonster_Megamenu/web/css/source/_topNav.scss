@@ -1,0 +1,198 @@
+// Main Styles
+
+.navigation{
+	li.level-top,
+	a.level-top{
+		position: static;
+
+		.submenu .submenu-reverse{
+			right: auto;
+		}
+		
+		.mm-label{
+			position: absolute;
+			top: -10px;
+			left: -5px;
+			padding: 3px 7px;
+			text-transform: uppercase;
+			font-size: $label-font-size;
+			line-height: $label-font-size * 1.2;
+			color: $label-color;
+			background-color: $label-bg;
+			display: none;
+			@media (min-width: $screen-md-min) {
+				display: block;
+			}
+		}	
+		
+		li{
+			position: relative;
+		}
+
+		.mm-image{
+			display: none;
+			margin-bottom: 10px;
+			img{
+				max-width: 100%;
+			}
+			@media (min-width: $screen-sm-min) {
+				display: block;
+			}
+
+		}
+
+		.megamenu-wrapper{
+			@media (min-width: $screen-md-min) {
+				box-shadow: $menu-shadow;
+			}
+			> .container {
+				top: 100%;
+				left: 0;
+				width: 100%;
+				padding: 20px 0;
+				background: $menu-bg;
+
+			}
+		}
+
+
+		ul.mm-submenu{
+			display: block;
+			padding: 0;
+
+			@media (max-width: $screen-sm-min - 1) {
+
+				&.level1 li a{
+					padding-left: 15px;
+					padding-right: 0;
+
+				}
+
+				.mm-submenu{
+					padding-left: 15px;
+				}
+			}
+			&.level1 {
+				border-right: 1px solid $border-color;
+				height: 100%;
+			}
+
+		}
+
+		.tm-megamenu{
+
+			// FIRST level
+			ul.level1{
+				> li{
+					@media (min-width: $screen-md-min) {
+						margin-bottom: 30px;
+						padding-right: 7px;
+					}
+					> a{
+						font-weight: 600;
+						position: relative;
+
+						@media (min-width: $screen-md-min) {
+							font-size: 16px;
+							color: $text-dark;
+							display: inline-block;
+							font-weight: 700;
+							margin-top: 15px;
+							margin-bottom: 10px;
+							text-transform: uppercase;
+							font-family: $secondary-font-family;
+							&:hover {
+								color: $primary;
+							}
+						}
+					}
+				}
+				li.mm-submenu{
+					@media (min-width: $screen-lg-min) {
+						padding-left: 25px;
+					}
+				}
+			}
+
+			// Link SECOND level
+			ul.level2{
+				> li{
+					a{
+						@media (min-width: $screen-md-min) {
+							color: $text-dark;
+							padding: 4px 0;
+							display: inline-block;
+							&:hover {
+								color: $secondary-color;
+							}
+						}
+					}
+				}
+			}
+			
+			// Product
+			.product{
+				
+				display: none;
+
+				.product-image {
+					margin-bottom: 10px;
+					a{
+						display: block;
+						border: solid 1px $menu-border;
+						background: none;
+					}
+				}
+				.product-name{
+					text-transform: uppercase;
+					display: block;
+					margin-bottom: 5px;
+					a{
+						padding: 0;
+						color: $name-color;
+
+						&:hover{
+							background: none;
+							color: $name-color-hover;
+						}
+					}
+				}
+				.price-box{
+					font-weight: bold;
+
+					.price{
+						font-size: 1.2em;
+						line-height: 1.2em;
+					}
+					.old-price{
+						font-size: 1em;
+						text-decoration: line-through;
+					}
+					.special-price{
+						font-size: 1.2em;
+					}
+				}
+
+				@media (min-width: $screen-md-min) {
+					display: block;
+				}
+			}
+
+			// Static Blocks
+			.widget,
+			.video,
+			.static-block{
+				display: none;
+				@media (min-width: $screen-md-min) {
+					display: block;
+				}
+			}
+		}
+
+		&:hover,
+		&.ui-state-focus{
+			.megamenu-wrapper{
+			}
+		}
+	}
+}

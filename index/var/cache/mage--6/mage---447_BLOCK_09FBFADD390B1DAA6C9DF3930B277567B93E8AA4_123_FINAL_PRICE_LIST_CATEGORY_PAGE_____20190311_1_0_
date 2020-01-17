@@ -1,0 +1,30 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552312329;s:6:"expire";i:1552315929;s:4:"tags";s:67:"447_BLOCK_HTML,447_CATALOG_PRODUCT_123,447_CATALOG_PRODUCT,447_MAGE";}
+<div class="price-box price-final_price" data-role="priceBox" data-product-id="123">
+    <span class="special-price">
+        
+
+<span class="price-container price-final_price tax weee"
+        >
+            <span class="price-label">Special Price</span>
+        <span  id="product-price-123"                data-price-amount="158"
+        data-price-type="finalPrice"
+        class="price-wrapper "
+        >
+        <span class="price">₹158.00</span>    </span>
+        </span>
+    </span>
+    <span class="old-price">
+        
+
+<span class="price-container price-final_price tax weee"
+        >
+            <span class="price-label">Regular Price</span>
+        <span  id="old-price-123"                data-price-amount="395"
+        data-price-type="oldPrice"
+        class="price-wrapper "
+        >
+        <span class="price">₹395.00</span>    </span>
+        </span>
+    </span>
+
+</div>

@@ -1,0 +1,108 @@
+<?php /** * Copyright © 2016 TemplateMonster. All rights reserved. * See COPYING.txt for license details. */ /** @var $data TemplateMonster\GoogleMap\Helper\Data */ $data = $this->helper('TemplateMonster\GoogleMap\Helper\Data'); /** @var TemplateMonster\GoogleMap\Helper\Config\Settings $helper */ $helper = $this->helper('TemplateMonster\GoogleMap\Helper\Config\Settings'); ?> <script type="text/javascript">
+    require([
+        'jquery',
+        'googleMapPagePlugin'
+    ], function($){
+        $(window).on('load.map', function(){
+
+           if(isEnabled()){
+               loadScript();
+           }
+        })
+    });
+
+    function isEnabled()
+    {
+        var home = <?php echo $data->isEnabled('home'); ?>,
+            contacts = <?php echo $data->isEnabled('contacts'); ?>,
+            footer = <?php echo $data->isEnabled('footer'); ?>,
+            showOnHome,
+            showOnContacts,
+            showInFooter,
+            body = document.getElementsByTagName('body')[0];
+
+        showOnHome = function(){
+            if(body.className.indexOf('cms-index-index') < 0){
+                return false;
+            }
+
+            return home;
+        };
+
+        showOnContacts = function(){
+            if(body.className.indexOf('contact-index-index') < 0){
+                return false;
+            }
+
+            return contacts;
+        };
+
+        showInFooter = function(){
+            return footer;
+        };
+
+        return (showOnHome() || showOnContacts() || showInFooter());
+    }
+
+
+    function loadScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "
+        document.body.appendChild(script);
+    }
+
+    function initMap() {
+        <?php foreach ($helper->getActiveGroup() as $group): ?> var mapOptions = {
+                center: new google.maps.LatLng(<?php echo $data->getMapCoordinates($group); ?>),
+                mapTypeId: google.maps.MapTypeId.<?php echo $data->getMapType($group); ?>,
+                zoom: <?php echo $data->getZoom($group); ?>,
+                disableDefaultUI: <?php echo $data->isEnabledUI($group); ?>,
+                scrollwheel: <?php echo $data->isEnabledScrollWheel($group); ?>,
+                draggable: <?php echo $data->isEnabledDraggable($group); ?>,
+                <?php if($data->getMapStyle($group)): ?>
+                styles: <?php echo $data->getMapStyle($group); ?>
+                <?php endif; ?> };
+
+            var element = document.getElementById("map_canvas_<?php echo $group; ?>");
+            if (element) {
+                var map_<?php echo $group; ?> = new google.maps.Map(element, mapOptions);
+            }
+
+            <?php $markers = $data->getMarkers($group);
+            if ($markers):
+                ob_start();
+                $counter = 0;
+
+                
+                foreach ($markers as $marker):
+                    $counter++;
+                    
+                    if ($marker['icon']):
+                        $marker_image = $data->getMedia() . 'googlemap/' . $marker['icon']; ?> var image<?php echo $counter ?> = {
+                            url: "<?php echo $marker_image; ?>"
+                        };
+                    <?php endif;?> var pos<?php echo $counter ?> = new google.maps.LatLng(<?php echo $marker['coordinates']; ?>);
+                    
+                    var marker = new google.maps.Marker({
+                        position: pos<?php echo $counter ?>,
+                        map: map_<?php echo $group; ?>
+                        <?php if (strlen($marker['icon']) > 0) { ?>
+                        ,	icon: image<?php echo $counter ?>
+                        <?php }; ?> });
+                    
+                    var content = "<?php echo $data->getContentInfowindow($marker['infowindow']); ?>";
+                    var infowindow = new google.maps.InfoWindow({
+                        content: content
+                    });
+                    google.maps.event.addListener(marker,'click', (function(marker, content, infowindow){
+                        return function() {
+                            infowindow.setContent(content);
+                            infowindow.open(map_<?php echo $group; ?> ,marker);
+                        };
+                    })(marker,content,infowindow));
+
+                <?php endforeach;
+                ob_get_contents(); ?> marker.setMap(map_<?php echo $group; ?>);
+                <?php ob_end_flush();
+            endif;?> <?php endforeach; ?> }</script>

@@ -1,0 +1,422 @@
+<?php /**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personalizedcoolrich
+* @copyright   Copyright (c) 2017 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalized-products-m2.html
+*
+**/
+?>
+<?php
+  
+  $product = $this->getProduct();
+	$productType=$product->getTypeId();
+	$enableFromProduct = $product->getAllowPersonalization();
+	if($enableFromProduct || $productType == 'personalized'):
+	$helper = $this->personalized_helper;
+	$imageHelper = $this->helper('Magento\Catalog\Helper\Image');
+  $isGoogleFontEnable = $helper->getConfig('personalizedcool/text_setting_group/google_font_enabled');
+  $pricePerText = $helper->getConfig('personalizedcool/text_setting_group/price_per_text');
+  $pricePerImage = $helper->getConfig('personalizedcool/Image_setting_group/personalized_price_per_image');
+  $isProductHasSide = $helper->isProductHasSide($product);
+  $googleFontList = '';
+  if ($isGoogleFontEnable) {
+    $googleFontList = $helper->getConfig('personalizedcool/text_setting_group/google_fonts');
+    $googleFontListCss = str_replace(',', '|', $googleFontList);
+  }
+  $fonts = $this->getFontCollection();
+  $tab1 = $helper->getConfig('personalizedcool/text_setting_group/text_enabled');
+  $tab2 = $helper->getConfig('personalizedcool/Image_setting_group/image_enabled');
+  $tab3 = $helper->getConfig('personalizedcool/Image_setting_group/clipart_enabled');
+  $thumbWidth = '50px';
+  $thumbHeight = '50px';
+  $imageFitCanvas = $helper->getConfig('personalizedcool/Image_setting_group/image_fit');
+  $isRaw = $helper->getConfig('personalizedcool/Image_setting_group/is_raw');
+  $status = $helper->getConfig('personalizedcool/license_status_group/status');
+  $sideCount = $helper->getSideCount($product);
+  $textObject = 0;
+  $imageObject = 0;
+  $width = $helper->getConfig('personalizedcool/area_setting_group/width');
+  $height = $helper->getConfig('personalizedcool/area_setting_group/height');
+  $flag = "not allowed";
+  $flagForHide = "hide";
+  $isRestrictedAreaDrawn=$helper->isRestrictedAreaDrawn($product);
+  $personalized_helper=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized');
+	$personalize_button_title=$personalized_helper->getConfig('personalizedcool/general_setting_group/button_label');
+	$personalization_mode=$personalized_helper->getConfig('personalizedcool/general_setting_group/personalization_mode');
+ $currencyCode = $helper->_currency->getCurrencySymbol();
+	$isGlobalRestrictedAllowed=$helper->getConfig('personalizedcool/general_setting_group/enable_area');
+
+?>
+<script>
+window.source_rotate_icon = '<?php echo $block->getViewFileUrl('Milople_Personalizedcool::images/rotate_icon.png');?>';
+window.source_resize_icon = '<?php echo $block->getViewFileUrl('Milople_Personalizedcool::images/resize_icon.png');?>';
+window.source_delete_icon = '<?php echo $block->getViewFileUrl('Milople_Personalizedcool::images/delete_icon.png');?>';
+window.source_duplicate_icon = '<?php echo $block->getViewFileUrl('Milople_Personalizedcool::images/duplicate_icon.png');?>';
+</script>
+<?php if($sideCount <= 1) { ?>
+			<input type="hidden" name="image_html"  id="image_html" value=""/>
+<?php
+		}else{
+				$i = 0;
+				foreach ($product->getMediaGalleryImages() as $_image) {
+				if($helper->isImageHasArea($product->getId(),$_image->getId())=="allowed"){
+?>
+				<input type="hidden" name="image_html[]" id="image-<?php echo $_image->getId(); ?>" value="" data-main-image-src="<?php echo $block->resize($_image->getFile(),$width,$height) ?>" />
+<?php
+				}
+				$i++;
+			}
+		}
+?>
+			<input type="hidden" name="iObject"  id="iObject" value="<?php echo $imageObject ?>"/>
+			<input type="hidden" name="tObject"  id="tObject" value="<?php echo $textObject ?>"/>
+			<input type="hidden" name="baseURL"  id="baseURL" value="<?php echo $helper->getBaseUrl() ?>"/>
+			<input type="hidden" name="raw_images" id="raw_images" value="0" />
+			<input type="hidden" name="image_fit" id="image_fit" value="<?php echo $imageFitCanvas ?>" />
+			<input type="hidden" name="is_raw" id="is_raw" value="<?php echo $isRaw ?>" />
+			<input type="hidden" name="config" id="config_id" value="0" />
+			<input type="hidden" name="hasArea" id="hasArea" value="<?php echo $isRestrictedAreaDrawn ?>" />
+			<input type="hidden" name="passing_name"  id="pass_name" value=""/>
+			<input type="hidden" name="passing_number"  id="pass_number" value=""/>
+			<input type="hidden" name="passing_size"  id="pass_size" value=""/>
+
+<?php if($personalization_mode != 'product_page'): ?>
+		<button type="button"
+				title="<?php echo $block->escapeHtml(__('Personalize')); ?>"
+				class="action primary"
+				id="personalized_it_btn">
+				<span><?php /* @escapeNotVerified */ echo __($personalize_button_title) ?></span>
+			</button>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function(
+            $,
+            modal
+        ) {
+        	var options = {
+	                type: 'popup',
+	                responsive: true,
+	                innerScroll: true,
+	                buttons: false
+	        };
+	       				var popup = modal(options, $('#popup-model'));
+			          $("#personalized_it_btn").on('click',function(){
+			                $("#popup-model").modal("openModal");
+			                $(document.body).css('position','fixed');
+			            });
+						$(".done-button").click(function(){
+							$("#popup-model").modal("closeModal");
+							$(document.body).css('position','');
+						});
+						$(".action-close").click(function(){
+							$(document.body).css('position','');
+							var currency_symbol = '<?php echo $currencyCode; ?>';
+							document.getElementById('tObject').value = 0;
+							document.getElementById('iObject').value = 0;
+							var productPrice = parseFloat(jQuery('span.price-final_price > span.price-wrapper').attr('data-price-amount')).toFixed(2);
+							var finalPrice = productPrice;
+							formatedPrice = currency_symbol + finalPrice;
+							jQuery('span.price-final_price > span.price-wrapper > span.price').text(formatedPrice);
+							<?php foreach ($product->getMediaGalleryImages() as $image) :
+								if($helper->isImageHasArea($product->getId(),$image->getId())=="allowed"){
+							?>
+									canvasObjects[<?php echo $image->getId() ?>].clear();
+							<?php } endforeach; ?>
+						});
+						$("#refresh_canvas_button").click(function(){
+						//select each object in present canvas and reduce image and text object count
+							var object_length   = parseInt(canvas.getObjects().length) - 1;
+								for(var i = 0; i <= object_length; i++)
+								{
+										canvas.setActiveObject(canvas.item(i));
+										var obj = canvas.getActiveObject();
+										var object_type = obj.type;
+										if(object_type == "text")
+										{
+
+											document.getElementById('tObject').value--;
+											canvas.renderAll();
+										}
+										if(object_type == "image")
+										{
+											document.getElementById('iObject').value--;
+											canvas.renderAll();
+										}
+								}
+							//End of the text and image count reduction algorithm
+							var currency_symbol = '<?php echo $currencyCode; ?>';
+							 if(jQuery('#add_text').length){
+								var textVar = document.getElementById('add_text');
+							 }else{
+								var textVar='';
+							 }
+							if (textVar) {
+									var pricePerText = textVar.getAttribute('data-price-per-text');
+							} else {
+									var pricePerText = 0;
+							}
+							if(jQuery('#imageUploader').length){
+								var imageUploader = document.getElementById('uploadimage');
+							}else{
+							   var imageUploader = '';
+							}
+							if (imageUploader) {
+									var pricePerImage = imageUploader.getAttribute('data-price-per-image');
+							} else {
+									var pricePerImage = 0;
+							}
+							var text_objects = document.getElementById('tObject').value;
+							var image_objects = document.getElementById('iObject').value;
+							var productPrice = parseFloat(jQuery('span.price-final_price > span.price-wrapper').attr('data-price-amount'));
+							var finalPrice = productPrice + (pricePerText * text_objects) + (pricePerImage * image_objects);
+							formatedPrice = currency_symbol + finalPrice;
+							jQuery('span.price-final_price > span.price-wrapper > span.price').text(formatedPrice);
+							canvas.clear();
+						});
+        }
+			);
+
+</script>
+<?php endif; ?>
+<?php if($personalization_mode == 'product_page'): ?>
+	<?php if(($status && $enableFromProduct) || ($product->getTypeId()=='personalized' && $status)): ?>
+	<style type="text/css">
+      <?php foreach($fonts as $font): ?>
+            @font-face {
+                font-family:"<?php echo $font->getName() ?>";
+                src: url("<?php echo $this->getFontFolder().$font->getTtfname() ?>"),
+                   url("<?php echo $this->getFontFolder().$font->getWoffname() ?>");
+            }
+            select#font_selection option[value="<?php echo $font->getName() ?>"] {
+              font-family: "<?php echo $font->getName() ?>";
+              font-size: 15px;
+            }
+        <?php endforeach; ?>
+</style>
+<div class="side-container">
+	<?php if($isProductHasSide) { ?>
+			<h4 class="personalized-options"><?php echo __('Choose Side') ?></h4>
+			<ul class="product-thumbs">
+				<?php
+					$i=0;
+					foreach ($product->getMediaGalleryImages()  as $image) {
+						$imageUrl = $image->getUrl();
+						if($helper->isImageHasArea($product->getId(),$image->getId())=="allowed"){
+				?>
+						<li>
+							<a data-main-image-src="<?php echo $imageUrl ?>" data-main-canvas-id="<?php echo $image->getId() ?>"  >
+							   <img src="<?php echo $imageUrl ?>" sort-order="0" title="" style="width:50px; height:60px;cursor:pointer;"   />
+							</a>
+						</li>
+						<?php } $i++; }//Foreach ?>
+			</ul>
+	<?php } //IF ?>
+</div>
+<div class="personalized-container tab-view">
+  <h4 class="personalized-options"><?php echo __('Personalization Options') ?></h4>
+  <?php if($tab1): ?>
+  <input id="tab1" type="radio" class="personalized_tab_radio" name="tabs"
+  <?php if($tab1): ?>checked <?php endif; ?> >
+  <label id="tab-text" class='' for="tab1" data-icon="q"><?php echo __('ADD TEXT') ?></label>
+  <?php endif; ?>
+   <?php if($tab2): ?>
+  <input  id="tab2"  type="radio" class="personalized_tab_radio" name="tabs" <?php if(!$tab1): ?>checked <?php endif;?> >
+  <label id="tab-image" for="tab2" data-icon="d"><?php echo __('UPLOAD IMAGE') ?></label>
+  <?php endif; ?>
+  <?php if($tab3): ?>
+  <input id="tab3" type="radio" class="personalized_tab_radio" name="tabs" <?php if(!$tab2): ?>checked <?php endif;?> >
+  <label id="tab-clip" for="tab3" data-icon="b"><?php echo __('CLIP ART') ?></label>
+   <?php endif; ?>
+  <?php if($tab1): ?>
+  <section id="content-text">
+       <div class="text_content">
+          <input type="text" data-price-per-text="<?php echo $pricePerText; ?>" id="add_text" class="addTextPersonalized input-text" placeholder="<?php echo __('Enter text here') ?>"  >
+          <input type="button"  id="add_text_button" value="<?php echo __('Add Text')?>" class="action primary tab-view " onClick="addtext()" />
+          <input type="button" value="<?php echo __('Update Text') ?>" class="action primary update-text tab-view" onClick="updatetext()" style="display: none;" />
+       </div><!--Text Content -->
+	     <h4 id="text_effects_title"><?php echo __('Text Style'); ?></h4>
+       <div class="text_style">
+								<div class="text_effect_buttons">
+									<button type="button" id="text-bold" title="<?php echo __('Bold'); ?>" class="font-size" >
+							<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/bold.png') ?>" />
+						</button>
+						<button type="button" id="text-italic" title="<?php echo __('Italic'); ?>" class="font-size" >
+							<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/italic.png') ?>" />
+					 	</button>
+						<button type="button" id="text-underline" title="<?php echo __('Underline'); ?>" class="font-size"  >
+							<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/underline.png') ?>" />
+					 </button>
+
+						<button type="button" title="<?php echo __('Increase Font Size'); ?>" id="font_inc" class="font-size">
+					 		<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/increase.png') ?>" />
+					 	</button>
+						<button type="button" id="font_dec" title="<?php echo __('Decrease Font Size'); ?>"  class="font-size">
+					 		<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/decrease.png') ?>" />
+					 </button>
+								<button type="button" title="<?php echo __('Font Color'); ?>" class="font_color" name="font_color"></button>
+				<div class="color-picker"></div>
+				<button type="button" title="<?php echo __('Background Color'); ?>" class="background_color" name="background_color"></button>
+				<div class="backgroundcolor-picker"></div>
+						 <button type="button" id="text-left" class="align" title="<?php echo __('Align Left'); ?>" >
+							 <img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/left-align.png') ?>" />
+						</button>
+						<button type="button" id="text-center" title="<?php echo __('Align Center'); ?>" class="align" >
+							<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/center-align.png') ?>" />
+						</button>
+						<button type="button" id="text-right" title="<?php echo __('Align Right'); ?>" class="align">
+							<img src="<?php echo $this->getViewFileUrl('Milople_Personalizedcool::images/right-align.png') ?>" />
+						</button>
+							</div>
+							<div class="font_style_popup">
+								<select id="font_selection" title="<?php echo __('Font Type'); ?>" >
+									 <?php foreach($fonts as $font): ?>
+											<option class="font_option" value="<?php echo $font->getName(); ?>"><?php echo $font->getName(); ?></option>
+									 <?php endforeach; ?>
+										<?php foreach(explode(',',$googleFontList)  as $googleFont): ?>
+											<option class="font_option" value="<?php echo $googleFont; ?>"><?php echo str_replace('+',' ',$googleFont); ?></option>
+										<?php endforeach; ?>
+								</select>
+								<h4 id="text_effects_title" ><?php echo __('Text Effects'); ?></h4>
+								<div class="text_effects" >
+									<ul class="distance_between_list">
+										<li class="data">
+											<select name="effect" id="effect" >
+												<option value="STRAIGHT"><?php echo __('Normal'); ?></option>
+												<option value="curved"><?php echo __('Curved'); ?></option>
+												<option value="arc"><?php echo __('Arc'); ?></option>
+												<option value="smallToLarge"><?php echo __('Small to Large'); ?></option>
+												<option value="largeToSmallTop"><?php echo __('Large to Small Toped'); ?></option>
+												<option value="largeToSmallBottom"><?php echo __('Large to Small Bottom'); ?></option>
+												<option value="bulge"><?php echo __('Bulge'); ?></option>
+											</select>
+										</li>
+										<li class="field radius-effect"><?php echo __('Radius'); ?>:</li>
+										<li class="data radius-effect"><input type="range"  min="0" max="100" value="50" id="radius" /></li>
+										<li class="field spacing-effect"><?php echo __('Spacing'); ?>:</li>
+										<li class="data spacing-effect"><input type="range"  min="5" max="40" value="20" id="spacing" /></li>
+										<li class="field reverse-effect"><?php echo __('Reverse'); ?>:</li>
+										<li class="data reverse-effect"><input type="checkbox" name="reverse" id="reverse" /></li>
+									</ul>
+								</div> <!-- Text Effect -->
+							</div>
+						 </div><!--Text Style End -->
+  </section>
+  <?php endif; ?>
+  <?php if($tab2): ?>
+  <section id="content-upload">
+        <input type="file" id="uploadimage" name="uploadimage" data-price-per-image="<?php echo $pricePerImage ?>" />
+  </section>
+  <?php endif; ?>
+  <?php if($tab3): ?>
+  <section id="content-clipart">
+        <div id="clipart_categories_container">
+            <select id="clipart_categories" name="clipart_category_id">
+              <option value=""><?php echo __('Select Clip Art Category'); ?></option>
+                <?php foreach($helper->getCategory() as $category): ?>
+                  <?php  $root_cat_id =$category->getId(); ?>
+                  <option value="<?php echo $root_cat_id; ?>"><?php echo $category->getName(); ?></option>
+                   <?php endforeach; ?>
+             </select>
+        </div>
+        <div id="clipart_images_container" class="a-center">
+          <div id="image_list" class="image_list">
+                  <?php foreach($helper->getAllImages() as $image): ?>
+                     <?php if($helper->checkCategoryImageStatus($image->getId())) :?>
+
+                     <img style="width:<?php echo  $thumbWidth ?>;height:<?php echo  $thumbHeight ?>;" src="<?php echo $helper->getMediaPath().$image->getPath() ?>" class="clipart-image" alt="<?php echo $image->getName() ?>" title="<?php echo $image->getName() ?>"/>
+                      <?php endif; ?>
+                     <?php endforeach; ?>
+                </div>
+                <span class="a-center" id="clipart-images-loader" style="display:none;">
+                   <img src="<?php echo $block->getViewFileUrl('Milople_Personalized::images/ajax-loader.gif') ?>" class="v-middle" alt=""/>
+                </span>
+                <?php if(count($helper->getAllImages()) == 0): ?>
+                  <span class="a-center"> <?php  echo __("Sorry, no images found."); ?></span>
+                <?php endif; ?>
+        </div>
+  </section>
+  <?php endif; ?>
+	<div class="directional-pad">
+									<div class='popup-controls'>
+									<button onclick="moveTop()" id="top" title="Move Top" type="button"><span data-icon="E"></span></button>
+									<button onclick="moveTopLeft()" id="top-left" title="Move Top Left" type="button"><span data-icon="D"></span></button>
+									<button onclick="moveTopRight()" id="top-right" title="Move Top Right" type="button"><span data-icon="F"></span></button>
+									<button onclick="moveCenter()" id="center" title="Move Center" type="button"><span data-icon="L"></span></button>
+									<button onclick="moveBottom()" id="bottom" title="Move Bottom" type="button"><span data-icon="I"></span></button>
+									<button onclick="moveBottomLeft()" id="bottom-left" title="Move Bottom Left" type="button"><span data-icon="J"></span></button>
+									<button onclick="moveBottomRight()" id="bottom-right" title="Move Bottom Right" type="button"><span data-icon="H"></span></button>
+									<button onclick="moveLeft()" id="left" title="Move Left" type="button"><span data-icon="K"></span></button>
+									<button onclick="moveRight()" id="right" title="Move Right" type="button"><span data-icon="G"></span></button>
+									</div>
+									<div class='popup-controls'>
+									<button onclick="rotateClock()" id="rotate" title="Rotate" type="button">&#8635;</button>
+									<button type="button" title="Anti Rotate" id="antirotate" onclick="rotateAntiClock()">&#8634;</button>
+									</div>
+									<div class='popup-controls'>
+									<button onclick="bringToFront()" id="btf" title="Bring to Front" type="button"><span data-icon="C"></span></button>
+									<button onclick="sendToBack()" id="stb" title="Send to Back" type="button"><span data-icon="A"></span></button>
+									</div>
+									<div class='popup-controls'>
+									<button onclick="flipHorizontal()" id="fh" title="Flip Horizontal" type="button"><span data-icon="t"></span></button>
+									<button onclick="flipVertical()" id="fv" title="Flip Vertical" type="button"><span data-icon="B"></span></button>
+									</div>
+									<div class='popup-controls'>
+									<button onclick="cloneObject()" id="clone" title="Duplicate" type="button"><span data-icon="y"></span></button>
+									<button onclick="deleteObject()" id="delete" title="Delete" type="button"><span data-icon="w"></span></button>
+									</div>
+									<div class='popup-controls'>
+									<button id="undo"  title="Undo" type="button" disabled>&#8617;</button>
+									<button id="redo" title="Redo" type="button" disabled >&#8618;</button>
+									</div>
+			</div>
+   <?php
+  if($this->personalized_helper
+                      ->getConfig('personalized/general_setting_group/note_setting')): ?>
+        <div id="instruct_container">
+            <p class="note-msg">
+              <?php echo $this->personalized_helper
+                      ->getConfig('personalized/general_setting_group/note_text'); ?>
+            </p>
+        </div>
+   <?php endif; ?>
+</div>
+<?php endif;  ?>
+<?php endif;  ?>
+<script>
+	/*flag_for_popup is a global variable,
+	used in personalized.js file for loadig jQuery
+	in popup for configurble product after swatch and size selection*/
+	var flag_for_popup = '<?php echo $personalization_mode; ?>';
+</script>
+<?php if($personalization_mode == 'product_page') :?>
+<script>
+	require(['jquery'], function(jQuery) {
+		jQuery(document).ready(function() {
+					<?php if($productType=='configurable' && $isRestrictedAreaDrawn==''): ?>
+						jQuery('#list_personalizer').hide();
+					<?php endif; ?>
+		});
+	});
+</script>
+<?php else: ?>
+<script>
+	require(['jquery'], function(jQuery) {
+    jQuery(document).ready(function() {
+			<?php if($productType=='configurable' && $isRestrictedAreaDrawn==''): ?>
+							jQuery('#personalized_it_btn').hide();
+			<?php endif; ?>
+			});
+	});
+</script>
+<?php endif; ?>
+<?php endif; // Main disable from product ?>
+

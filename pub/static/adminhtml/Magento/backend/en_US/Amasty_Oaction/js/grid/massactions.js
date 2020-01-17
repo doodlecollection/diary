@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/Oaction/view/base/web/js/grid/massactions.js

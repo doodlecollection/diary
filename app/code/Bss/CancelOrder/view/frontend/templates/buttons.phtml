@@ -1,0 +1,53 @@
+<?php
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_CancelOrder
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+?>
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * Button template
+ *
+ * @var $block \Magento\Sales\Block\Order\Recent
+ */
+?>
+<div class="actions">
+    <?php  $_order = $block->getOrder() ?>
+    <?php if ($this->helper(Magento\Sales\Helper\Reorder::class)->canReorder($_order->getEntityId())) : ?>
+        <a href="#" data-post='<?php /* @escapeNotVerified */ echo
+            $this->helper(Magento\Framework\Data\Helper\PostHelper::class)
+            ->getPostData($block->getReorderUrl($_order))
+            ?>' class="action order">
+        <span><?php /* @escapeNotVerified */ echo __('Reorder') ?></span>
+        </a>
+    <?php endif ?>
+
+    <a class="action print"
+        href="<?php /* @escapeNotVerified */ echo $block->getPrintUrl($_order) ?>"
+        onclick="this.target='_blank';">
+        <span><?php /* @escapeNotVerified */ echo __('Print Order') ?></span>
+    </a>
+
+    <?php if ($_order->getState() == "new" || $_order->getState() == "pending_payment") : ?>
+        <a href="#"
+            class="cd-popup-trigger"
+            data-order-id="<?php /* @escapeNotVerified */ echo $_order->getIncrementId(); ?>">
+            <?php echo $block->getChildHtml('cancel_link'); ?>
+        </a>
+    <?php endif ?>
+
+    <?php echo $block->getChildHtml('cancel_popup'); ?>
+</div>

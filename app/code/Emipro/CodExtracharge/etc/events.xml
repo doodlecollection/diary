@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+   <event name="sales_model_service_quote_submit_before">
+       <observer name="emipro_extracharge" instance="Emipro\CodExtracharge\Observer\Extracharge" />
+    </event>
+
+    <event name="catalog_product_save_after">
+       <observer name="emipro_extracharge2" instance="Emipro\CodExtracharge\Observer\Saveproduct" />
+    </event>
+
+    <event name="catalog_product_delete_after_done">
+       <observer name="emipro_extracharge3" instance="Emipro\CodExtracharge\Observer\Saveproduct" />
+    </event>
+
+    <event name="controller_action_catalog_product_save_entity_after">
+       <observer name="emipro_extracharge4" instance="Emipro\CodExtracharge\Observer\Saveproduct" />
+    </event>
+     <!-- <event name="sales_order_load_after">
+        <observer name="extension_attribute" instance="Emipro\CodExtracharge\Observer\Sales\Order" />
+    </event> -->
+    <!-- <event name="sales_order_load_after">
+        <observer name="extensionattribute" instance="Emipro\CodExtracharge\Observer\Sales\OrderLoadAfter" />
+    </event> -->
+
+</config>

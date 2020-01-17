@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<page layout="3columns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+
+    <update handle="default_head_blocks"/>
+
+    <body>
+        <referenceBlock name="top.links">
+            <block class="Magento\Framework\View\Element\Html\Link" name="header-menu">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Track Order</argument>
+                    <argument name="path" xsi:type="string">https://www.delhivery.com</argument>
+					<argument name="attributes" xsi:type="array">
+						<item name="target" xsi:type="string">_blank</item>
+					</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <!-- Inline scripts -->
+        <referenceContainer name="before.body.end">
+            <block class="Magento\RequireJs\Block\Html\Head\Config" name="requirejs-config"/>
+            <block class="Magento\Translation\Block\Js" name="translate" template="Magento_Translation::translate.phtml"/>
+            <block class="Magento\Framework\View\Element\Js\Cookie" name="js_cookies" template="Magento_Theme::js/cookie.phtml"/>
+            <block class="Magento\Theme\Block\Html\Notices" name="global_notices" template="html/notices.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="theme.js" before="-" template="Magento_Theme::jsconfigurator.phtml" />
+        </referenceContainer>
+        <!-- Inline scripts END -->
+
+        <!-- Header. RD-Navbar -->
+        <referenceContainer name="header.container">
+            <container name="rd.navbar-wrap" htmlTag="div" htmlClass="rd-navbar">
+                <container name="header.content" htmlTag="div" htmlClass="header-content" />
+            </container>
+        </referenceContainer>
+
+        <referenceBlock name="skip_to_content" remove="true" />
+        <!-- Header. RD-Navbar END -->
+
+        <!-- Navbar Collapse -->
+        <block class="Magento\Framework\View\Element\Template" name="navbar.collapse" template="Magento_Theme::rd-navbar-collapse.phtml"/>
+        <move element="navbar.collapse" destination="sm.header.customer.menu.wrap" before="-" />
+        <!-- Navbar Collapse End -->
+
+        <!-- Header Panel -->
+        <referenceContainer name="header.panel" htmlClass="panel page-header__panel">
+            <container name="header.panel.grid-container" htmlClass="container" htmlTag="div" before="-">
+                <container name="header.panel.right" htmlClass="page-header__panel-right" htmlTag="div" before="-">
+                    <block type="cms/block" class="Magento\Cms\Block\Block" name="add_header_info" after="-">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">add_header_info</argument>
+                        </arguments>
+                    </block>
+                </container>
+                <container name="header.panel.left" htmlClass="page-header__panel-left" htmlTag="div" after="-">
+                    <container name="header.switchers" htmlClass="header-switchers" htmlTag="div" before="-"/>
+                </container>
+            </container>
+        </referenceContainer>
+        <!-- Header Panel END -->
+
+        <!-- Header Content -->
+        <referenceContainer name="header-wrapper" htmlClass="page-header__content">
+            <container name="header-wrapper.grid-container" htmlClass="container" htmlTag="div" before="-">
+                <container name="header-wrapper.grid-container.top" htmlClass="top-container" htmlTag="div" before="-">
+                    <container name="header-wrapper.grid-container.left" htmlClass="page-header__content-left" htmlTag="div" after="-" />
+                    <container name="header-wrapper.grid-container.center" htmlClass="page-header__content-logo" htmlTag="div" after="header-wrapper.grid-container.left">
+                        <container name="header-wrapper.grid-container.search" htmlClass="page-header__content-search" htmlTag="div" before="-"/>
+                    </container>
+                    <container name="header-wrapper.grid-container.right" htmlClass="page-header__content-right" htmlTag="div" after="-" />
+                </container>
+                <container name="header-wrapper.grid-container.menu" htmlClass="page-header__content-menu" htmlTag="div" after="-"/>
+            </container>
+        </referenceContainer>
+        <!-- Header Content END -->
+
+        <!-- Navbar Collapse -->
+        <container name="sm.header.customer.menu.wrap" htmlClass="sm-header_customer-menu-container" htmlTag="div" after="-">
+            <container name="sm.header.cutomer.menu" htmlClass="sm-header_customer-menu" htmlTag="div">
+                
+                <block class="Magento\Theme\Block\Html\Header" name="header_mobile" as="header_mobile" before="-">
+                    <arguments>
+                        <argument name="show_part" xsi:type="string">welcome</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Store\Block\Switcher" name="store_language_mobile" as="store_language" template="switch/languages_mobile.phtml" before="currency_mobile"/>
+                <block class="Magento\Directory\Block\Currency" name="currency_mobile" before="store_language" template="currency_mobile.phtml" after="-"/>
+            </container>
+        </container>
+
+        <move element="top.links" destination="sm.header.cutomer.menu" before="-"/>
+        <!-- Navbar Collapse End -->
+
+        <referenceBlock name="navigation.sections" remove="true" />
+
+        <move element="sm.header.customer.menu.wrap" destination="header.panel.left" before="-"/> <!-- Top links -->
+        <move element="logo"                         destination="header-wrapper.grid-container.left" before="-"/>
+        <move element="header.panel"                 destination="header.content" before="-" />
+        <move element="header-wrapper"               destination="header.content" after="header.panel" />
+        <move element="catalog.topnav"               destination="header-wrapper.grid-container.menu" before="-" />
+        <move element="header"                       destination="header-wrapper.grid-container.right" before="-"/> <!-- Welcome message -->
+        <move element="store_language"               destination="header.switchers" before="-"/>
+        <move element="currency"                     destination="header.switchers" after="store_language"/>
+        <move element="minicart"                     destination="header-wrapper.grid-container.right" after="-"/>
+        <move element="top.search"                   destination="header-wrapper.grid-container.center" after="-" />
+        <move element="catalog.compare.link"         destination="top.links" after="wish-list-link" />
+        <move element="theme_options.social_links.header"   destination="header.panel.right" after="-"/>
+
+        <!-- Logo -->
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.png</argument>
+                <argument name="logo_img_width" xsi:type="number">104</argument>
+                <argument name="logo_img_height" xsi:type="number">80</argument>
+            </arguments>
+        </referenceBlock>
+        <!-- Logo END -->
+
+        <!-- Page messages -->
+        <!--<referenceContainer name="page.messages" htmlClass="page-messages messages">-->
+            <!--<container name="page.messages.grid-container" htmlClass="container" htmlTag="div" before="-"/>-->
+        <!--</referenceContainer>-->
+
+        <!--<move element="ajax.message.placeholder" destination="page.messages.grid-container"/>-->
+        <!--<move element="messages" destination="page.messages.grid-container"/>-->
+        <!-- Page messages END -->
+
+        <!-- Top Main position (Slider&Banner) -->
+        <referenceContainer name="main.content">
+            <container name="maincontent.top.position" htmlTag="div" htmlClass="container" before="-">
+                <container name="maincontent.top.position.row" htmlTag="div" htmlClass="row" before="-">
+                    <container name="slider-container" as="slider-container" label="Top Slider Container" htmlTag="div" htmlClass="slider-container col-md-12 col-lg-9"/>
+                    <container name="right-banner-container" as="right-banner-container" label="Top RightBanner container (Near Slider)" htmlTag="div" htmlClass="banner-container col-lg-3 col-md-hide"/>
+                </container>
+            </container>
+        </referenceContainer>
+        <!-- Footer -->
+        <referenceContainer name="footer" htmlClass="page-footer" htmlTag="footer">
+            <container name="footer.grid-container" htmlClass="container content footer" htmlTag="div" before="-">
+                <container name="footer.subscribe" htmlClass="subscribe-box" htmlTag="div" before="-"/>
+                <container name="footer.grid-row" htmlClass="row" htmlTag="div">
+					<container name="footer.grid-col4" htmlClass="col-md-12 col-lg-12" htmlTag="div">
+                        <block type="cms/block" class="Magento\Cms\Block\Block" name="testimonials" after="-">
+                            <arguments>
+                                <argument name="block_id" xsi:type="string">testimonials</argument>
+                            </arguments>
+                        </block>
+                    </container>
+					
+                    <container name="footer.grid-col0" htmlClass="col-md-3 col-lg-3" htmlTag="div">
+                        <container name="footer.grid-col0.wrapper" htmlClass="footer-col" htmlTag="div">
+                            <block type="cms/block" class="Magento\Cms\Block\Block" name="footer_col_0">
+                                <arguments>
+                                    <argument name="block_id" xsi:type="string">footer_col_0</argument>
+                                </arguments>
+                            </block>
+                        </container>
+                    </container>
+                    <container name="footer.grid-col1" htmlClass="col-md-3 col-lg-3" htmlTag="div">
+                        <container name="footer.grid-col1.wrapper" htmlClass="footer-col" htmlTag="div">
+                            <block class="Magento\Framework\View\Element\Template" name="footer.col.title.1" template="Magento_Theme::html/footer_col_title_2.phtml" before="-"/>
+                            <container name="footer_col_content_1" htmlClass="footer-col-content" htmlTag="div">
+                                <block type="cms/block" class="Magento\Cms\Block\Block" name="footer_col_1" after="footer.col.title.1">
+                                    <arguments>
+                                        <argument name="block_id" xsi:type="string">footer_col_1</argument>
+                                    </arguments>
+                                </block>
+                            </container>
+                        </container>
+                    </container>
+                    <container name="footer.grid-col2" htmlClass="col-md-3 col-lg-3" htmlTag="div">
+                        <container name="footer.grid-col2.wrapper" htmlClass="footer-col" htmlTag="div">
+                                <block type="cms/block" class="Magento\Cms\Block\Block" name="footer_col_2">
+                                    <arguments>
+                                        <argument name="block_id" xsi:type="string">footer_col_2</argument>
+                                    </arguments>
+                                </block>
+                        </container>
+                    </container>
+                    <container name="footer.grid-col3" htmlClass="col-md-3 col-lg-3" htmlTag="div">
+                        <block type="cms/block" class="Magento\Cms\Block\Block" name="footer_col_3" before="-">
+                            <arguments>
+                                <argument name="block_id" xsi:type="string">footer_col_3</argument>
+                            </arguments>
+                        </block>
+                    </container>
+                </container>
+            </container>
+            <container name="footer.panel" htmlClass="footer-panel" htmlTag="div" after="-">
+                <container name="footer.panel.container" htmlClass="container" htmlTag="div">
+                    <!--<block class="Magento\Theme\Block\Html\Header\Logo" name="logo-footer" before="-">-->
+                        <!--<arguments>-->
+                            <!--<argument name="logo_file" xsi:type="string">images/logo.png</argument>-->
+                            <!--<argument name="logo_img_width" xsi:type="number">65</argument>-->
+                            <!--<argument name="logo_img_height" xsi:type="number">50</argument>-->
+                        <!--</arguments>-->
+                    <!--</block>-->
+                    <block type="cms/block" class="Magento\Cms\Block\Block" name="payment" after="-">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">payment</argument>
+                        </arguments>
+                    </block>
+                </container>
+            </container>
+        </referenceContainer>
+		
+		<move element="tm.facebook.page.widget.content"     destination="footer.grid-col4" />
+        <move element="footer"                              destination="page.wrapper" after="main.content"/>
+		<move element="theme_options.social_links.footer"   destination="footer.grid-col0.wrapper" before="-"/>
+        <move element="footer_links"                        destination="footer_col_content_1" after="-"/>
+        <move element="form.subscribe"                      destination="footer.subscribe"/>
+        <move element="store_switcher"                      destination="footer.grid-container" before="-"/>
+        <move element="store_switcher"                      destination="footer.grid-container" before="copyright"/>
+        
+        <move element="copyright"                           destination="footer.panel.container" before="-"/>
+        
+
+        <referenceBlock name="report.bugs"  remove="true" />
+        <!-- Footer END -->
+
+        <!-- To Top Button -->
+        <referenceContainer name="page.wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="to.top.button" after="-" template="Magento_Theme::text.phtml">
+                <arguments>
+                    <argument translate="true" name="text" xsi:type="string">To Top</argument>
+                    <argument name="tag" xsi:type="string">div</argument>
+                    <argument name="css_class" xsi:type="string">scrollToTop</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <!-- Page Preloader -->
+        <!--<referenceContainer name="page.wrapper">-->
+            <!--<block class="Magento\Framework\View\Element\Template" name="page.preloader" template="Magento_Theme::page_preloader.phtml" before="-"/>-->
+        <!--</referenceContainer>-->
+
+    </body>
+</page>

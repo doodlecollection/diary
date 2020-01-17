@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalizedcool-products-m2.html
+*
+**/
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root" label="Root">
+        <block class="Milople\Personalizedcool\Block\Adminhtml\Category\Edit\Tab\Images" name="milople_personalized_category_edit_tab_images"/>
+        <block class="Magento\Backend\Block\Widget\Grid\Serializer" name="images_grid_serializer">
+            <arguments>
+                <argument name="input_names" xsi:type="string">position</argument>
+                <argument name="grid_block" xsi:type="string">milople_personalized_category_edit_tab_images</argument>
+                <argument name="callback" xsi:type="string">getSelectedImages</argument>
+                <argument name="input_element_name" xsi:type="string">links[images]</argument>
+                <argument name="reload_param_name" xsi:type="string">images</argument>
+            </arguments>
+        </block>
+    </container>
+</layout>

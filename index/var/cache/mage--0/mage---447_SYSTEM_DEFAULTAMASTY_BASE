@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:2:{s:13:"notifications";a:2:{s:4:"type";s:39:"INFO,PROMO,INSTALLED_UPDATE,TIPS_TRICKS";s:9:"frequency";s:1:"5";}s:12:"system_value";a:3:{s:16:"first_module_run";s:10:"1539763719";s:11:"last_update";s:10:"1552278468";s:11:"remove_date";s:10:"1552302162";}}

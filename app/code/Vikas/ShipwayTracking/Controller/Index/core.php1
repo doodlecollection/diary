@@ -1,0 +1,218 @@
+<?php
+namespace Vikas\ShipwayTracking\Controller\Index;
+
+class Core
+{
+	private $shipway_username = '';
+	private $shipway_licence_key = '';
+	
+	private $_code = 200;
+	private $_content_type = "application/json";
+	private $_request_method = '';
+	private $_allowed_methods = array();
+	private $_allowedServices = array();
+	protected $_requestedService = '';
+	
+	protected $_filters = array();
+	protected $_page	= '';
+	protected $_pageSize	= '';
+	protected $_sorting	= '';
+	
+	public function __construct($username, $licence_key){
+		
+		$this->shipway_username 	= $username;
+		
+		$this->shipway_licence_key 	= $licence_key;
+	
+		$this->initialize();
+	}
+	
+	private function initialize(){
+		$this->_request_method = $_SERVER['REQUEST_METHOD'];
+		$this->_allowed_methods = array('GET');
+		
+		$this->_allowedServices = $this->getAllowedServices();
+		$this->_requestedService = ( isset($_REQUEST['service']) ) ? $_REQUEST['service'] : '';
+		
+		$this->_hash	= ( isset($_REQUEST['hash']) ) ? $_REQUEST['hash'] : '';
+		
+		if(!$this->validateRequestedService()){
+			$this->response('Method not allowed.',405);
+		}
+		
+		if(isset($_REQUEST['filters'])){
+			$this->_filters = $_REQUEST['filters'];
+		}
+		
+		if(isset($_REQUEST['page'])){
+			$this->_page = $_REQUEST['page'];
+		}
+		
+		if(isset($_REQUEST['page_size'])){
+			$this->_pageSize = $_REQUEST['page_size'];
+		}
+		
+		if(isset($_REQUEST['sort_by'])){
+			$this->_sorting = $_REQUEST['sort_by'];
+		}
+		
+		if(!$this->authorizedShipwayUser()){
+			$this->response('Unauthorized Request',401);
+		}
+	}
+	
+	private function authorizedShipwayUser(){
+		$expectedHash = sha1($this->shipway_username.md5($this->shipway_licence_key));
+		return $expectedHash == $this->_hash;
+	}
+	
+	public function response($data, $status = 200 ){
+		
+		$this->_code =  $status;
+		$this->set_headers();
+		
+		if( is_array($data)){
+			return json_encode($data);
+		}else{
+			return $data;
+		}
+		exit;
+	}
+	
+	public function validate_request_method(){
+		if(!in_array($this->_request_method, $this->_allowed_methods)){
+			$this->response('Method not allowed.',405);
+		}
+		
+		return true;
+	}
+	
+	public function get_referer(){
+		return $_SERVER['HTTP_REFERER'];
+	}
+	
+	private function set_headers(){
+		header("HTTP/1.1 ".$this->_code." ".$this->get_status_message());
+		header("Content-Type:".$this->_content_type);
+	}
+	
+	private function get_status_message(){
+		
+		$status = array(
+			100 => 'Continue',  
+			101 => 'Switching Protocols',  
+			200 => 'OK',
+			201 => 'Created',  
+			202 => 'Accepted',  
+			203 => 'Non-Authoritative Information',  
+			204 => 'No Content',  
+			205 => 'Reset Content',  
+			206 => 'Partial Content',  
+			300 => 'Multiple Choices',  
+			301 => 'Moved Permanently',  
+			302 => 'Found',  
+			303 => 'See Other',  
+			304 => 'Not Modified',  
+			305 => 'Use Proxy',  
+			306 => '(Unused)',  
+			307 => 'Temporary Redirect',  
+			400 => 'Bad Request',  
+			401 => 'Unauthorized',  
+			402 => 'Payment Required',  
+			403 => 'Forbidden',  
+			404 => 'Not Found',  
+			405 => 'Method Not Allowed',  
+			406 => 'Not Acceptable',  
+			407 => 'Proxy Authentication Required',  
+			408 => 'Request Timeout',  
+			409 => 'Conflict',  
+			410 => 'Gone',  
+			411 => 'Length Required',  
+			412 => 'Precondition Failed',  
+			413 => 'Request Entity Too Large',  
+			414 => 'Request-URI Too Long',  
+			415 => 'Unsupported Media Type',  
+			416 => 'Requested Range Not Satisfiable',  
+			417 => 'Expectation Failed',  
+			500 => 'Internal Server Error',  
+			501 => 'Not Implemented',  
+			502 => 'Bad Gateway',  
+			503 => 'Service Unavailable',  
+			504 => 'Gateway Timeout',  
+			505 => 'HTTP Version Not Supported'
+		);
+					
+		return ($status[$this->_code])?$status[$this->_code]:$status[500];
+	}
+	
+	public function getShipwayApiVersion(){
+		return '1.0.1';
+	}
+	
+	private function getAllowedServices(){
+		$services = array(
+			'GET' => array(
+				'orders'
+			)
+		);
+		
+		return $services;
+	}
+	
+	private function validateRequestedService(){
+		return (isset($this->_allowedServices[$this->_request_method])) && (in_array($this->_requestedService, $this->_allowedServices[$this->_request_method]));
+	}
+	
+	private function cleanInputs($data){
+		$clean_input = array();
+		
+		if(is_array($data)){
+			foreach($data as $k => $v){
+				$clean_input[$k] = $this->cleanInputs($v);
+			}
+		}else{
+			if(get_magic_quotes_gpc()){
+				$data = trim(stripslashes($data));
+			}
+			$data = strip_tags($data);
+			$clean_input = trim($data);
+		}
+		return $clean_input;
+	}
+	
+	public function getRequestedService(){
+		return $this->_requestedService;
+	}
+	
+	public function getRequestedMethod(){
+		return $this->_request_method;
+	}
+	
+	public function getFilters(){
+		return $this->_filters;
+	}
+	
+	public function getPage(){
+		return $this->_page;
+	}
+	
+	public function getPageSize(){
+		return $this->_pageSize;
+	}
+	
+	public function getSorting(){
+		return $this->_sorting;
+	}
+	
+	public function getFuncPrefix(){
+		$prefix = array(
+			'GET' => 'get',
+			'POST' => 'update',
+			'PUT' => 'insert',
+			'DELETE' => 'delete'
+		);
+		
+		return (isset($prefix[$this->_request_method])) ? $prefix[$this->_request_method] : '';
+	}
+}
+?>

@@ -1,0 +1,1 @@
+/var/www/html/app/code/One97/Paytm/view/frontend/web/js/view/payment/one97-paytm.js

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalized-products-m2.html
+*
+**/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Create our type FontsGridDataProvider -->
+    <virtualType name="FontsGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Milople\Personalizedcool\Model\ResourceModel\Fonts\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">FontsGridFilterPool</argument> <!-- Define new object for filters -->
+        </arguments>
+    </virtualType>
+ 
+  
+    <!-- Type for personalize_fonts_listing_data_source -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="personalized_fonts_listing_data_source" xsi:type="string">Milople\Personalizedcool\Model\ResourceModel\Fonts\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+ 
+    <!-- Simulate our class Milople\Personalizedcool\Model\ResourceModel\Grid\Fonts\Collection -->
+    <virtualType name="Milople\Personalizedcool\Model\ResourceModel\Fonts\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">personalized_fonts</argument>
+            <argument name="resourceModel" xsi:type="string">Milople\Personalizedcool\Model\ResourceModel\Fonts</argument>
+        </arguments>
+    </virtualType>
+	
+     <preference for="Magento\Sales\Block\Order\Item\Renderer\DefaultRenderer"
+                type="Milople\Personalizedcool\Block\Item\Renderer"/>
+
+     <preference for="Magento\Catalog\Block\Product\ListProduct" type="Milople\Personalizedcool\Block\Product\ListProduct" />
+	 
+	 <preference for="Milople\Personalizedcool\Api\Data\CategoryInterface" type="Milople\Personalizedcool\Model\Category" />
+    <preference for="Milople\Personalizedcool\Api\CategoryRepositoryInterface" type="Milople\Personalizedcool\Model\CategoryRepository" />
+
+    <preference for="Milople\Personalizedcool\Api\Data\ImageInterface" type="Milople\Personalizedcool\Model\Image" />
+    <preference for="Milople\Personalizedcool\Api\ImageRepositoryInterface" type="Milople\Personalizedcool\Model\ImageRepository" />
+
+    <virtualType name="CategoryGridCollection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">personalized_category_category</argument>
+            <argument name="resourceModel" xsi:type="string">Milople\Personalizedcool\Model\ResourceModel\Category</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="milople_personalized_category_listing_data_source" xsi:type="string">CategoryGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="ImageGridCollection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">personalized_category_image</argument>
+            <argument name="resourceModel" xsi:type="string">Milople\Personalizedcool\Model\ResourceModel\Image</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="milople_personalized_image_listing_data_source" xsi:type="string">ImageGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+		
+</config>

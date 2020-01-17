@@ -1,0 +1,1 @@
+/var/www/html/app/code/Bss/AjaxCart/view/frontend/web/js/popup.js

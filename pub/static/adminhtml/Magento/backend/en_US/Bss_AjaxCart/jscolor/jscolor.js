@@ -1,0 +1,1 @@
+/var/www/html/app/code/Bss/AjaxCart/view/adminhtml/web/jscolor/jscolor.js

@@ -1,0 +1,99 @@
+.footer .block.newsletter{
+    margin-bottom: 30px;
+    form{
+        @include make-flex;
+        @include justify-content(space-between);
+        @include flex-wrap(wrap);
+        flex-basis: 50%;
+        @media (max-width: $screen-lg-min - 1) {
+            flex: 1 1 100%;
+        }
+    }
+
+    h4 {
+        color: $text-dark;
+        font-size: 26px;
+        margin-bottom: 5px;
+    }
+
+    .content {
+        @include make-flex;
+        @include align-items(flex-end);
+        @include flex-wrap(wrap);
+        @include justify-content(space-between);
+        background: $primary;
+        padding: 20px;
+        @media (min-width: $screen-xxl-min) {
+            padding: 37px 40px 30px 38px;
+        }
+        .label {
+            font-size: 15px;
+            color: $text-dark;
+            margin: 0 0 8px;
+            display: block;
+            @media (min-width: $screen-xxl-min) {
+                font-size: 18px;
+            }
+        }
+    }
+    .subscribe-text {
+        margin-right: 20px;
+    }
+    .field{
+        padding: 0;
+        position: relative;
+        @include flex-basis(calc(100% - 130px));
+
+        input{
+            background: $white;
+            border: 0;
+            margin-bottom: 0;
+            transition: margin-bottom $default-transition;
+            padding: 13px 18px 12px 40px;
+            color: $text-dark;
+            line-height: 20px;
+            font-weight: 100;
+            border-radius: 4px;
+
+        }
+        &:before {
+            @include font-icon__pseudo('\e034', $out-icon-family);
+            position: absolute;
+            height: 20px;
+            line-height: 20px;
+            font-size: 20px;
+            top: 50%;
+            margin-top: -10px;
+            left: 15px;
+            color: $text-dark;
+        }
+    }
+    .actions{
+        @include flex-basis(120px);
+        font-weight: 700;
+        line-height: 20px;
+        .action {
+            background: $secondary-color;
+            color: $white;
+            padding: 13px 30px 12px;
+            &:hover {
+                background: $text-dark;
+            }
+        }
+    }
+    .field,
+    .actions{
+        margin-bottom: 8px;
+    }
+    #newsletter-error{
+        position: absolute;
+        left: 0;
+        padding: 1px;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: left;
+        background: $white;
+        margin-top: 1px;
+        border-radius: 2px;
+    }
+}

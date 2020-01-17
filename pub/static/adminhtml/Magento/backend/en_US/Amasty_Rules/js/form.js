@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/Rules/view/adminhtml/web/js/form.js

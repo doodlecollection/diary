@@ -1,0 +1,92 @@
+
+//
+//  Grid
+//  ---------------------------------------------
+
+.products-grid{
+    .product-items{
+        @include make-flex();
+        @include make-row();
+        @include flex-wrap(wrap);
+    }
+    .product-item{
+        @include make-col();
+        @include flex-basis(100%);
+        margin-bottom: $gutter-width;
+
+        @media (min-width: $screen-xs-min){
+            @include flex-basis(50%);
+        }
+        @media (min-width: $screen-sm-min){
+            @include flex-basis(33.33%);
+        }
+    }
+
+    //Image
+    .product-image-container{
+        display: inline-block;
+        max-width: 100%;
+    }
+    .product-image-wrapper{
+        height: 0;
+        display: block;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+    }
+    .product-image-photo{
+        text-align: center;
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: auto;
+        max-width: 100%;
+    }
+    .product-item-details {
+        margin-top: 13px;
+    }
+    //Reviews
+    .reviews-actions{
+        @include make-flex();
+        @include justify-content(space-between);
+        .action.add{
+            @include font-icon('\ea7a');
+            font-size: 0;
+            &:before{
+                font-size: $default-font-size;
+            }
+        }
+    }
+
+    //Price
+    .price-from{
+        margin-bottom: 0;
+    }
+
+    .price-to{
+        margin-bottom: 0;
+    }
+
+    .product-item-info-box {
+        @include make-flex;
+        @include justify-content(space-between);
+        margin-top: 14px;
+        .price-box {
+            margin-left: 7px;
+            margin-top: 3px;
+            @include make-flex;
+            @include flex-direction(column);
+            @include align-items(flex-end);
+        }
+        &.product-item-actions,
+        .product-item-actions{
+            @include align-items(center);
+            @include justify-content(space-between);
+            width: 100%;
+        }
+    }
+}

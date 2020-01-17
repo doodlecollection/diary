@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalizedcool-products-m2.html
+*
+**/
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	 <head>
+		<css src="Milople_Personalizedcool::css/lightbox.css" />
+	  <link src="Milople_Personalizedcool::js/responsiveslides.js"/>
+    </head>
+     <body>
+       <referenceBlock name="column_name">
+            <action method="setTemplate">
+                <argument name="template" translate="true" xsi:type="string">Milople_Personalizedcool::items/column/name.phtml</argument>
+				 		</action>
+       </referenceBlock>
+			 <referenceBlock name="column_name_downloadable">
+            <action method="setTemplate">
+                <argument name="template" translate="true" xsi:type="string">Milople_Personalizedcool::items/column/name.phtml</argument>
+            </action>
+       </referenceBlock>
+			 <referenceBlock name="order_items">
+					<block class="Magento\Bundle\Block\Adminhtml\Sales\Order\View\Items\Renderer" name="custom_renderer" template="Milople_Personalizedcool::items/column/renderer.phtml"/>
+					<action method="setChild">
+							<argument name="alias" xsi:type="string">bundle</argument>
+							<argument name="block" xsi:type="string">custom_renderer</argument>
+					</action>
+			</referenceBlock>
+    	</body>
+</page>

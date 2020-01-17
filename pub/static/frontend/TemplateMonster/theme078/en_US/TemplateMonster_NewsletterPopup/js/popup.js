@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/NewsletterPopup/view/frontend/web/js/popup.js

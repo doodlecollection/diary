@@ -1,0 +1,30 @@
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Emipro\CodExtracharge\Block\Adminhtml\Grid\Edit" name="codextracharge_grid_edit"/>
+        </referenceContainer>
+
+
+        <referenceContainer name="left">
+            <block class="Emipro\CodExtracharge\Block\Adminhtml\Grid\Edit\Tabs" name="codextracharge_grid_edit_tabs">
+                <block class="Emipro\CodExtracharge\Block\Adminhtml\Grid\Edit\Tab\Main" name="emipro_codextracharge_edit_tab_main"/>
+                <block class="Emipro\CodExtracharge\Block\Adminhtml\Grid\Edit\Tab\Conditions" name="emipro_codextracharge_edit_tab_conditions"/>
+                <block class="Emipro\CodExtracharge\Block\Adminhtml\Grid\Edit\Tab\Actions" name="emipro_codextracharge_edit_tab_actions"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">main_section</argument>
+                    <argument name="block" xsi:type="string">emipro_codextracharge_edit_tab_main</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">conditions_section</argument>
+                    <argument name="block" xsi:type="string">emipro_codextracharge_edit_tab_conditions</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">actions_section</argument>
+                    <argument name="block" xsi:type="string">emipro_codextracharge_edit_tab_actions</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

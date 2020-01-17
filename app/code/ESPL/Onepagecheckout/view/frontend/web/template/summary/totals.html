@@ -1,0 +1,19 @@
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: isDisplayed() -->
+<div class="order">
+<span data-bind="i18n: 'Order Summary'" class="title">Order Summary</span>
+</div>
+<table class="data table table-totals" id="espl-espl-summary-table-totals">
+	<!--<caption class="table-caption" data-bind="i18n: 'Order Summary'"></caption>-->
+	<tbody>
+		<!-- ko foreach: elems() -->
+		<!-- ko template: getTemplate() --><!-- /ko -->
+		<!-- /ko -->
+	</tbody>
+</table>
+<!-- /ko -->

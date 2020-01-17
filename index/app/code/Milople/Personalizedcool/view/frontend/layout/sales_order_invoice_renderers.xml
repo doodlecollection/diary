@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+      <referenceBlock name="sales.order.invoice.renderers">
+					<block class="Magento\Downloadable\Block\Sales\Order\Item\Renderer\Downloadable" name="custom_renderer" template="Milople_Personalizedcool::order/invoice/items/renderer/downloadable.phtml"/>
+					<action method="setChild">
+							<argument name="alias" xsi:type="string">downloadable</argument>
+							<argument name="block" xsi:type="string">custom_renderer</argument>
+					</action>
+			</referenceBlock>
+			<referenceBlock name="sales.order.invoice.renderers">
+					<block class="Magento\Bundle\Block\Sales\Order\Items\Renderer" name="custom_renderer" template="Milople_Personalizedcool::order/invoice/items/renderer/renderer.phtml"/>
+					<action method="setChild">
+							<argument name="alias" xsi:type="string">bundle</argument>
+							<argument name="block" xsi:type="string">custom_renderer</argument>
+					</action>
+			</referenceBlock>
+    </body>
+</page>

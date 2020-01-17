@@ -1,0 +1,215 @@
+//
+// Variables
+//----------------------------------------------
+$search-padding-hor:     20px;
+$search-padding-vert:    13px;
+
+//
+//  Search mini form
+//  ---------------------------------------------
+
+.block-search{
+    .block-title,
+    .nested{
+        display: none;
+    }
+}
+
+//
+//  Desktop view Search
+//-----------------------------------------------
+@media (min-width: $screen-md-min) {
+    .block-search {
+        .search-control_wrapper {
+            display: block !important;
+
+            .ui-dialog-buttonpane {
+                display: none;
+            }
+        }
+
+        #search_mini_form {
+            @include make-flex;
+
+            .search .label {
+                display: none;
+            }
+
+            .field {
+                padding: 0;
+            }
+
+            .control {
+                position: static;
+                top: auto;
+                right: auto;
+                left: auto;
+            }
+
+            input {
+                font-size: 14px;
+                line-height: 17px;
+                padding: $search-padding-vert $search-padding-hor $search-padding-vert 2*$search-padding-hor;
+
+                @media (min-width: $screen-lg-min) {
+                    min-width: 370px;
+                }
+                @media (min-width: $screen-xl-min) {
+                    min-width: 400px;
+                }
+            }
+
+            button[type="submit"] {
+                @include font-icon('\e032', $out-icon-family);
+                background: $primary;
+                font-size: 20px;
+                line-height: 21px;
+                font-weight: 700;
+                padding: 11px 13px 10px;
+                color: $white;
+                border: 1px solid transparent;
+                margin-left: -1px;
+                border-radius: 4px;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                span {
+                    display: none;
+                }
+                &:hover {
+                    background: $accent;
+                }
+            }
+        }
+    }
+}
+//
+//  Mobile view Search
+//-----------------------------------------------
+
+@media (max-width: $screen-md-min - 1){
+    .block-search{
+        #search_mini_form{
+            &,
+            > .search{
+                position: fixed;
+                z-index: 51;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 0;
+                padding: 0;
+                margin: 0;
+            }
+
+            .ui-dialog-buttonpane{
+                display: none;
+            }
+        }
+
+
+        .search .label{
+            display: block;
+            position: fixed;
+            z-index: 11;
+            top: 0;
+            right: 2.5*$rd-navbar-panel-height;
+            font-family: $default-icon-family;
+            width: $rd-navbar-panel-height;
+            height: $rd-navbar-panel-height;
+            background: transparent;
+            @include toggle-icons-via-rotation($rd-navbar-panel-height, 20px, $sm-header-contrast-color, '\ea66', '\ea5c');
+
+            span{
+                text-indent: 200vw;
+                &:before,
+                &:after{
+                    text-indent: 0;
+                }
+            }
+
+            &.active{
+                right: 0;
+                z-index: 99;
+                span{
+                    color: $text-light;
+                }
+                &:hover span{
+                    color: $primary;
+                }
+            }
+        }
+
+        .field.search > .search-control_wrapper{
+            position: fixed;
+            z-index: 10;
+            left: auto;
+            top: 0;
+            right: 2*$rd-navbar-panel-height;
+            width: 0;
+            height: $rd-navbar-panel-height;
+            transition: $default-transition;
+
+            > .control{
+                height: 100%;
+            }
+
+            input{
+                border-radius: 0;
+                height: 100%;
+                width: 100%;
+                display: block;
+                background: $white;
+                border: none;
+                font-size: 12px;
+                line-height: 14px;
+                padding: 16px 0 16px 0;
+            }
+        }
+
+        #search_mini_form .search.active .search-control_wrapper{
+            right: 0;
+            left: 0;
+            width: auto;
+            z-index: 97;
+
+            input{
+                padding: 16px 112px 16px 16px;
+            }
+        }
+
+        form{
+            button[type="submit"]{
+                @include font-icon('\ea66');
+                background: transparent;
+                color: $sm-header-main-color;
+                line-height: $rd-navbar-panel-height;
+                margin: 0;
+                padding: 0;
+                position: fixed;
+                z-index: 59;
+                right: $rd-navbar-panel-height;
+                top: -$rd-navbar-panel-height;
+                width: $rd-navbar-panel-height;
+                height: $rd-navbar-panel-height;
+                opacity: 0;
+                &:before{
+                    font-size: 20px;
+                }
+
+                span{
+                    display: none;
+                }
+            }
+        }
+
+        .field.search.active + .actions button[type="submit"]{
+            top: 0;
+            opacity: 1;
+            z-index: 99;
+            &:hover{
+                color: $text-dark;
+            }
+        }
+    }
+}
+

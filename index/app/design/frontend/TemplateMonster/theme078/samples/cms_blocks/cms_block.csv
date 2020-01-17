@@ -1,0 +1,113 @@
+"block_id","title","identifier","content","creation_time","update_time","is_active"
+"1","Footer column content 1","footer_col_1","<ul>
+    <li><a href=""{{store direct_url=""about-us""}}"">About Us</a></li>
+    <li><a href=""{{store direct_url=""customer-service""}}"">Customer Service</a></li>
+    <li><a href=""{{store url=""""}}template-settings"">Template Settings</a></li>
+</ul>
+
+","2016-03-12 05:30:44","2016-04-18 19:21:52","1"
+"4","Footer column content 2","footer_col_2","<div class=""footer-col"">
+    <h4>Why buy from us</h4>
+    <div class=""footer-col-content"">
+        <ul>
+            <li><a href=""{{store url=""""}}shipping-delivery"">Shipping & Delivery</a></li>
+            <li><a href=""{{store url=""""}}secure-payment"">Secure payment</a></li>
+            <li><a href=""{{store url=""""}}support"">Support</a></li>
+            <li><a href=""{{store url=""""}}guarantee"">Guarantee</a></li>
+            <li><a href=""{{store url=""""}}terms-conditions"">Terms & Conditions</a></li>
+        </ul>
+    </div>
+</div>","2016-03-12 05:33:05","2017-02-06 14:43:38","1"
+"7","Footer column content 3","footer_col_3","<div class=""footer-col"">
+    <h4>My account</h4>
+    <div class=""footer-col-content"">
+        <ul>
+            <li><a href=""{{store url='customer/account/login/'}}"">Sign In</a></li>
+            <li><a href=""{{store url='checkout/cart/'}}"">View Cart</a></li>
+            <li><a href=""{{store url='wishlist/'}}"">My Wishlist</a></li>
+            <li><a href=""{{store url=""""}}faq"">FAQ</a></li>
+        </ul>
+    </div>
+</div>
+","2016-03-12 05:35:20","2017-02-06 14:44:07","1"
+"10","add_header_info","add_header_info","<div class=""add_header_info"">
+	<div class=""wrap-text"">
+		<span class=""icon fl-outicons-phone14""></span>
+		<a href=""tel:+3(800)2345-6789"">+3(800) 2345-6789</a>
+		<p class=""box-offer-desc"">Round-the-clock free hotline (24/7)</p>
+	</div>
+	<div class=""wrap-text"">
+		<span class=""icon fl-outicons-clock169""></span>
+		<p class=""box-offer-desc"">Hours: 7 days a week from 9:00 am to 7:00 pm</p>
+	</div>
+</div>","2017-07-31 10:07:36","2017-07-31 14:15:00","1"
+"11","Offers","offers","<div class=""offsers-wrap"">
+	<div class=""row"">
+		<div class=""col-md-6 col-lg-3"">
+			<div class=""box-offer"">
+				<div class=""box-offer-inner"">
+					<span class=""icon fl-outicons-phone14""></span>
+					<div class=""wrap-text"">
+						<div class=""box-offer-title"">
+							<a href=""tel:+3(800)2345-6789"">+3(800) 2345-6789</a>
+						</div>
+						<div class=""box-offer-desc"">Round-the-clock free hotline (24/7)</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class=""col-md-6 col-lg-3"">
+			<div class=""box-offer"">
+				<div class=""box-offer-inner"">
+					<span class=""icon  fl-outicons-clock169""></span>
+					<div class=""wrap-text"">
+						<div class=""box-offer-title"">
+							<a href=""shipping-delivery"">opening Hours</a>
+						</div>
+						<div class=""box-offer-desc"">7 days a week from 9:00 am to 7:00 pm</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class=""col-md-6 col-lg-3"">
+			<div class=""box-offer"">
+				<div class=""box-offer-inner"">
+					<span class=""icon fl-outicons-truck72""></span>
+					<div class=""wrap-text"">
+						<div class=""box-offer-title"">
+							<a href=""shipping-delivery"">Free Shipping</a>
+						</div>
+						<div class=""box-offer-desc"">We provide you with fast and free delivery regardless of the product size and value.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class=""col-md-6 col-lg-3"">
+			<div class=""box-offer"">
+				<div class=""box-offer-inner"">
+					<span class=""icon fl-outicons-refresh8""></span>
+					<div class=""wrap-text"">
+						<div class=""box-offer-title"">
+							<a href=""shipping-delivery"">Return & Exchange</a>
+						</div>
+						<div class=""box-offer-desc"">You can return or exchange the item within 30 days.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>","2017-07-31 10:08:34","2017-07-31 17:44:26","1"
+"12","AboutUs","footer_col_0","<h4>About</h4>
+<div class=""footer-col-content about-footer-text""><p>At Evolveris, we offer only non-GMO varieties that are very special for home gardeners, based on great flavor, easy culture and exceptional garden performance. This seed line is our great selection of new, exciting and unusual seed choices of time-tested heirlooms, certified organic seeds, the best international hybrids and fine open-pollinated varieties.</p></div>","2017-07-31 10:09:58","2017-07-31 10:09:58","1"
+"13","Payment","payment","<div class=""payment""><img src=""{{view url='images/media/payment.png'}}"" alt=""banner-image""></div>","2017-07-31 10:10:44","2017-07-31 10:10:44","1"
+"14","Banner 1","banner-1","<div class=""banner-container-1""><div class=""banner-wrapper""><a href=""herbs.html""><img src=""{{view url='images/media/banner-1_img-1.png'}}"" alt=""banner-img""></a></div></div>","2017-07-31 15:02:35","2017-08-01 15:32:42","1"
+"15","Banner 2","banner-2","<div class=""banner-container-2"">
+	<div class=""row"">
+		<div class=""col-md-6"">
+			<div class=""banner-wrapper""><a href=""fruits.html""><img src=""{{view"" alt=""banner-img"" url=""images/media/banner-2_img-1.jpg}}""></a></div>
+		</div>
+		<div class=""col-md-6"">
+			<div class=""banner-wrapper""><a href=""organics.html""><img src=""{{view"" alt=""banner-img"" url=""images/media/banner-2_img-2.jpg}}""></a></div>
+		</div>
+	</div>
+</div>","2017-07-31 16:40:46","2017-07-31 16:40:46","1"

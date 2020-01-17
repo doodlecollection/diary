@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!--
+/**
+*
+* Do not edit or add to this file if you wish to upgrade the module to newer
+* versions in the future. If you wish to customize the module for your
+* needs please contact us to https://www.milople.com/contact-us.html
+*
+* @category    Ecommerce
+* @package     Milople_Personlized
+* @copyright   Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved.
+* @url         https://www.milople.com/magento2-extensions/personalizedcool-products-m2.html
+*
+**/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+		<system>
+			<tab id="Milople" translate="label" sortOrder="200">
+           		<label>Milople Extensions</label>
+       	 	</tab>
+	       	<section id="personalizedcool" translate="label" type="text" sortOrder="140" showInDefault="1" showInWebsite="1" showInStore="1">
+				<label>Personalized Cool</label>
+				<tab>Milople</tab>
+				<!-- resource tag name which we have to defined in the acl.xml -->
+				<resource>Milople_Personalizedcool::config_personalized</resource>
+					<!--Group Serial Key -->
+					<group id="license_status_group" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+						<!-- Group Name -->
+						<label>License And Status</label>
+							<field id="serial_key" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Serial Key</label>
+	                   			 <backend_model>Milople\Personalizedcool\Model\Config\Backend\Lookup</backend_model>
+														<validate>required-entry</validate>
+	                		</field> 
+							<field id="status" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                  			  	<label>Status</label>
+		    					<source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+               				 </field>
+					</group>
+					<!-- Personalized Area Setting-->
+					<group id="area_setting_group" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+						<!-- Group Name -->
+						<label>Personalized Area Settings</label>
+							<field id="width" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Width</label>
+	                   		</field> 
+							<field id="height" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Height</label>
+	                   		</field> 
+					</group>
+					<!-- General Setting-->
+					<group id="general_setting_group" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+						<!-- Group Name -->
+						<label>General Settings</label>
+						
+							<field id="button_label" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Personalized Products Button Text</label>
+	                		  	 <comment><![CDATA[Displayed only on products listing page to highlight pesonalization feature.]]></comment>
+	                   		</field> 
+	                   		<field id="enable_area" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Allow Personalization in Fixed Area</label>
+	                		  	 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		  	 <comment><![CDATA[To restrict design area on product image]]></comment>
+	                   		</field>
+											<field id="personalization_mode" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+												 <label>Personalization Mode</label>        
+												 <source_model>Milople\Personalizedcool\Model\Config\Source\PersonalizationMode</source_model>
+											</field>
+					</group>
+					<!-- Text Setting Group -->
+					<group id="text_setting_group" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+						<!-- Group Name -->
+						<label>Text Settings</label>
+							<field id="text_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label> Allow Personalization with Text</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		</field> 
+							<field id="google_font_enabled" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Allow Text Formatting with Google Fonts</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		</field> 
+	                		<field id="google_fonts" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Allow Text Formatting with Google Fonts</label>
+	                   			 <source_model>Milople\Personalizedcool\Model\Config\Source\Googlefonts</source_model>
+	                   			 <depends>
+							 	    <field id="google_font_enabled">1</field>
+							   	 </depends>
+	                		</field> 
+	                		<field id="price_per_text" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Price per Text</label>
+	                		</field> 
+					</group>
+					<!-- Image Setting Group -->
+					<group id="Image_setting_group" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+						<!-- Group Name -->
+						<label>Image &amp; Clip Art Settings</label>
+							<field id="image_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label> Allow Personalization with Image</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		</field> 
+							<field id="clipart_enabled" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Allow Personalization with Clipart</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                   			  <comment><![CDATA[After you enable Clipart, you need to create clipart categories and images from the menu]]></comment>
+	                		</field>
+	                		<field id="personalized_price_per_image" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label> Price per Image </label>
+	                		</field>
+							<field id="image_fit" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Upload Image Fit to Canvas</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		</field>
+								<field id="is_raw" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+	                		  	 <label>Raw image download</label>
+	                   			 <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+	                		</field>
+					</group>
+			</section>
+		</system>
+</config>		

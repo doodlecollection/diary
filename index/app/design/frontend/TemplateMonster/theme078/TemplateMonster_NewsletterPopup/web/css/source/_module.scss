@@ -1,0 +1,308 @@
+/*
+* TM_Newsletter-popup
+*/
+
+// Main Styles
+
+.newsletter-popup.modal-popup {
+
+    // Modal
+    .modal-inner-wrap {
+        margin-top: 7%;
+        padding: 0;
+        margin-right: 20px;
+        margin-left: 20px;
+        background: $primary;
+
+        @media screen and (max-width: $screen-sm-min - 1) {
+            width: auto !important;
+        }
+        @media (min-width: $screen-sm-min){
+            margin-top: 12%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .action-close {
+            padding: 0;
+            top: 0;
+            right: 0;
+            width: 43px;
+            height: 43px;
+            text-align: center;
+            border-radius: 50%;
+            background: $white;
+            z-index: 99;
+            &:before {
+                display: block;
+                font-size: 24px;
+                line-height: 43px;
+                transition: $default-transition;
+                color: $secondary-color;
+            }
+            &:hover:before {
+                color: $accent;
+            }
+            @media (min-width: $screen-sm-min){
+                top: -50px;
+                right: -50px;
+            }
+
+        }
+
+    }
+
+    .actions {
+        display: none;
+    }
+
+
+    // Header
+    header.modal-header {
+        padding: 60px 40px 40px;
+        background: $white;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+        @media (min-width: $screen-sm-min) {
+            &:before,
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0;
+                right: 0;
+                left: 0;
+                height: 200%;
+                background: url("../images/media/newsletterpopupbg.png") no-repeat;
+                pointer-events: none;
+                z-index: 1;
+            }
+            &:before {
+                top: -50px;
+            }
+            &:after {
+                transform: rotateY(-180deg);
+            }
+        }
+
+        h1.modal-title {
+            font-size: 21px;
+            line-height: 1;
+            font-weight: 700;
+            border-bottom: none;
+            padding: 0;
+            margin-bottom: 0;
+            color: #010100;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .content-text{
+            padding-bottom: 5px;
+            margin-top: 23px;
+            > span {
+                display: block;
+                color: #010100;
+                line-height: 1;
+                &.size-1 {
+                    font-size: 20px;
+                    font-weight: 700;
+                    letter-spacing: 0.04em;
+                    @media (min-width: $screen-sm-min) {
+                        font-size: 24px;
+                    }
+                }
+                &.size-2 {
+                    display: inline-block;
+                    color: $secondary-color;
+                    .banner-label {
+                        margin-left: -10px;
+                        font-size: 104px;
+                        line-height: 1;
+                        z-index: 99;
+                        font-weight: 700;
+                        font-family: $special-font-family;
+                        text-transform: none;
+                        @media (min-width: $screen-lg-min){
+                            font-size: 134px;
+                        }
+
+                        i {
+                            float: right;
+                            text-align: left;
+                            font-size: 64px;
+                            letter-spacing: 0;
+                            margin-top: 5px;
+                            margin-left: 15px;
+                            @media (min-width: $screen-lg-min){
+                                font-size: 86px;
+                            }
+                            b {
+                                display: block;
+                                font-size: 21px;
+                                margin-top: 0;
+                                font-family: $secondary-font-family;
+                                text-transform: uppercase;
+                                @media (min-width: $screen-lg-min){
+                                    font-size: 40px;
+                                    margin-top: -5px;
+                                }
+                            }
+                        }
+                    }
+                }
+                &.size-3 {
+                    font-size: 19px;
+                    font-weight: 700;
+                    font-family:$secondary-font-family;
+                    background: url("../images/media/text-labe-bg.png") center center no-repeat;
+                    background-size: contain;
+                    padding: 11px 0 10px;
+                }
+            }
+
+            @media (min-width: $screen-sm-min){
+                padding-bottom: 20px;
+            }
+
+            p{
+                margin-bottom: 0;
+            }
+        }
+
+    }
+
+    // Content
+    .modal-content {
+        padding: 40px 40px 25px;
+        margin-bottom: 15px;
+        @include make-flex;
+        @include justify-content(space-between);
+        @include flex-wrap(wrap);
+        position: relative;
+
+        .newsletter-popup {
+            order: 1;
+            @include flex-basis(100%);
+            @media (min-width: 460px){
+                @include flex-basis(calc(100% - 165px));
+            }
+        }
+
+        .block.newsletter {
+            margin: 0;
+            width: 100%;
+
+            .field{
+                padding: 0;
+
+                input {
+                    padding: 12px 18px 12px 40px;
+                    margin-bottom: 5px;
+                    border-radius: 4px;
+                }
+                .control {
+                    position: relative;
+                    &:before {
+                        @include font-icon__pseudo('\e697', $secondary-icon-family);
+                        position: absolute;
+                        height: 20px;
+                        line-height: 20px;
+                        font-size: 20px;
+                        top: 0;
+                        margin-top: 12px;
+                        left: 15px;
+                        color: $secondary-color;
+                    }
+                    div.mage-error {
+                        background: $white;
+                        padding: 1px;
+                        border-radius: 2px;
+                        margin-top: 1px;
+                        margin-bottom: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    // Footer
+    footer.modal-footer {
+        padding: 10px 0 0;
+
+        @media (min-width: $screen-sm-min){
+            padding-top: 25px;
+        }
+
+        .modal-social {
+            background: $bg-dark;
+            font-size: 1.75em;
+            padding: 15px 30px 10px;
+
+            a {
+                display: inline-block;
+                margin-bottom: 5px;
+                padding: 7px 5px;
+                transition: .2s;
+                &:hover{
+                    opacity: 0.7;
+                }
+            }
+
+            :link,
+            :hover{
+                text-decoration: none;
+            }
+        }
+    }
+
+    // Buttons block
+    .buttons-container {
+        order: 2;
+        @include flex-basis(100%);
+        @media (min-width: 460px){
+            @include flex-basis(158px);
+        }
+
+        @media (min-width: $screen-sm-min){
+            padding-bottom: 25px;
+        }
+
+        button {
+            @include button-block;
+            padding: 13px 15px;
+            box-shadow: none;
+
+            @media (min-width: $screen-lg-min){
+                padding: 13px 13px;
+            }
+
+            &.subscribe{
+                color: $white;
+                width: 100%;
+                &:hover{
+                    color: $white;
+                    background: $primary;
+                }
+            }
+            &:not(.subscribe) {
+                @media (min-width: 460px){
+                    position: absolute;
+                }
+                bottom: 0;
+                left: 40px;
+                background: none;
+                padding: 0;
+                margin: 10px 0 0 0;
+                color: $secondary-color;
+                text-decoration: underline;
+                text-transform: none;
+                font-weight: 400;
+                &:hover {
+                    background-color: transparent !important;
+                    text-decoration: none;
+                    color: $white;
+                }
+            }
+        }
+    }
+}

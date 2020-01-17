@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:2:{s:7:"general";a:6:{s:6:"active";s:1:"0";s:5:"title";s:16:"Site Maintenance";s:17:"background_repeat";s:1:"0";s:19:"background_position";s:1:"0";s:15:"background_size";s:1:"0";s:21:"background_attachment";s:1:"0";}s:5:"timer";a:1:{s:6:"format";s:16:"%D days %H:%M:%S";}}

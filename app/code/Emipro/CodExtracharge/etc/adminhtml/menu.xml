@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+
+	  <add id="Emipro_CodExtracharge::Manage" title="Emipro - Cash On Delivery - Extra Charges" module="Emipro_CodExtracharge" sortOrder="40" parent="Magento_Backend::marketing" resource="Emipro_CodExtracharge::grid" dependsOnConfig="payment/cashondelivery/activebaseonrule" />
+
+	  <add id="Emipro_CodExtracharge::grid" title="Manage Cash On Delivery Rules" module="Emipro_CodExtracharge" sortOrder="10" action="codextracharge/grid" resource="Emipro_CodExtracharge::grid" parent="Emipro_CodExtracharge::Manage" dependsOnConfig="payment/cashondelivery/activebaseonrule" />
+
+    </menu>
+</config>
+

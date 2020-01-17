@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magento\Checkout\Controller\Index\Index">
+		<plugin name="espl_onepagecheckout_checkout_controller"
+			type="ESPL\Onepagecheckout\Plugin\Checkout\Controller\Index\Index"/>
+		</type>
+		<type name="Magento\Checkout\Block\Onepage\Link">
+			<plugin name="espl_onepagecheckout_get_checkout_url_onepage_link"
+				type="ESPL\Onepagecheckout\Plugin\Checkout\Block\Onepage\Link"/>
+			</type>
+			<type name="Magento\Checkout\Block\Link">
+				<plugin name="espl_onepagecheckout_get_checkout_url_link"
+					type="ESPL\Onepagecheckout\Plugin\Checkout\Block\Link"/>
+				</type>
+			</config>

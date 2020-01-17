@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/Megamenu/view/frontend/web/js/megamenu.js

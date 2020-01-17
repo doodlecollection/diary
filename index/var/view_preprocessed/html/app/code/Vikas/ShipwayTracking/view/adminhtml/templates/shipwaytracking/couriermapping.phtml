@@ -1,0 +1,57 @@
+<div id="shipwaytracking_couriermapping_id" style="padding-left: 50px;"><?php /*$read = Mage::getSingleton('core/resource')->getConnection('core_read'); $write = Mage::getSingleton('core/resource')->getConnection('core_write');*/ $objectManager = \Magento\Framework\App\ObjectManager::getInstance(); $scopeConfig = $objectManager->get('\Magento\Framework\App\Config\ScopeConfigInterface'); $ExtensibleDataObjectConverter = $objectManager->get('Magento\Framework\Api\ExtensibleDataObjectConverter'); $resource = $objectManager->get('Magento\Framework\App\ResourceConnection'); $connection = $resource->getConnection(); $shipway_username = $scopeConfig->getValue('shipway_tracking_section/general/text_shipway_username',\Magento\Store\Model\ScopeInterface::SCOPE_STORE); $shipway_licence_key = $scopeConfig->getValue('shipway_tracking_section/general/text_shipway_licence_key',\Magento\Store\Model\ScopeInterface::SCOPE_STORE); /* $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER); $obj = $bootstrap->getObjectManager();*/ $deploymentConfig = $objectManager->get('Magento\Framework\App\DeploymentConfig'); $table_prefix = $deploymentConfig->get('db/table_prefix'); $table_name = $table_prefix.'shipway_couriermapping'; $couriermap= $connection->fetchAll("select * from ".$table_name); $customecouriermap= $connection->fetchAll("select * from ".$table_name." where courier_type='custom' "); if(isset($shipway_username) && isset($shipway_licence_key)){ $shipway_loginid= $shipway_username; $shipway_licencekey= $shipway_licence_key; } else{ $shipway_loginid= ''; $shipway_licencekey= ''; } /* print_r($couriermap); print_r($shipway_loginid); print_r($shipway_licencekey);*/ $options = $this->getShippingMethods(); ?> <?php $url = "http://shipway.in/api/getcarrier"; $data_string = array( "username" => $shipway_loginid, "password" => $shipway_licencekey ); $data_string = json_encode($data_string); $curl = curl_init(); curl_setopt($curl, CURLOPT_HTTPHEADER, array( 'Content-Type:application/json' )); curl_setopt($curl, CURLOPT_URL, $url); curl_setopt($curl, CURLOPT_POST, true); curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string); curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); $output = curl_exec($curl); curl_close($curl); $output = (array)json_decode($output); ?> <?php if(empty($this->getFormKey()) && $this->getFormKey() !=''){ $_form_key = 'key/'.$this->getFormKey(); }else{ $_form_key = ''; } $url = $this->getFormAction().$_form_key; ?> <form action="<?php echo $url; ?>" method="POST"><div class="content-header"><table cellspacing="0" style=" width: 100%;"><tbody><tr><td style="width:50%;"><h3 class="icon-head head-sales-order">Shipway Courier Mapping</h3></td><td class="form-buttons"><button class="action- scalable primary" onclick="<?php echo $this->getFormAction(); ?>">Save Mapping</button></td></tr></tbody></table></div><div class="grid"><input type="hidden" name="form_key" value="<?php echo $this->getFormKey(); ?>" /><table style="width: 40%;border: 1px solid #cbd3d4;border-bottom: none;float: left;border-collapse: separate;border-spacing: 2px;" id="myTable"><tr><th>Courier Name</th><th>Shipway Courier</th></tr><?php foreach($options as $key1 => $value){ ?> <tr><td><?php echo $options[$key1]['label']?></td><td><select name="shipway[<?php echo $options[$key1]['value']?>]"><option value="">Select courier</option><?php foreach($output as $key => $carrier_name){?> <option value="<?php echo $key; ?>" <?php if(isset($couriermap[$key1]['shipway_courierid']) && $couriermap[$key1]['shipway_courierid']==$key){echo "selected";}?>><?php echo ucfirst($carrier_name);?></option><?php } ?></select></td></tr><?php } ?> <?php foreach($customecouriermap as $key1 => $value){ ?> <tr><td><input type="text" name="shipway_customcourier_name[]" value="<?php echo $customecouriermap[$key1]['default_courier']?>"></td><td><select name="shipway_courier_id[]"><option value="">Select courier</option><?php foreach($output as $key => $carrier_name){?> <option value="<?php echo $key; ?>" <?php if($customecouriermap[$key1]['shipway_courierid']==$key){echo "selected";}?>><?php echo ucfirst($carrier_name);?></option><?php } ?></select></td></tr><?php } ?></table></div><div style="clear:both;"></div><div style="margin-top:20px; margin-left: 30%;"><button class="action- scalable primary" class="addCF" onclick="return addcustomcourier();" value="Add Custom Courier" >Add Custom Courier</button></div></form><script>
+require(['jquery', 'jquery/ui'], function($){
+  jQuery(document).ready( function() {
+   
+     console.log('Shipway Courier mapping Page ');
+  });
+});</script><script>
+ 
+function addcustomcourier(){
+
+
+
+
+
+var table = document.getElementById("myTable");
+
+
+
+
+
+var row = table.insertRow(-1);
+
+
+
+
+
+var cell1 = row.insertCell(0);
+
+var cell2 = row.insertCell(1);
+
+
+
+
+
+cell1.innerHTML = "<input type='text' placeholder='custom courier' name='shipway_customcourier_name[]'>";
+
+var html="";
+
+html+='<select name="shipway_courier_id[]">';
+
+<?php foreach ($output as $key=> $carrier_name) { ?> html += '<option value="<?php echo $key; ?>"><?php echo ucfirst($carrier_name);?></option>';
+
+    <?php } ?> html+='</select>';
+
+cell2.innerHTML = html;
+return false;
+
+}</script><script src="https://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript"></script><script type="text/javascript">
+      
+       jQuery(document).ready(function(){
+       console.log('Shipway Courier mapping Page ');
+       jQuery( "#shipwaytracking_couriermapping_id" ).insertAfter( ".page-header" );
+
+
+
+ });// ]]>
+</script><?php ?></div><style type="text/css"> th{ padding: 2px 4px 2px 4px; white-space: nowrap; border-width: 0 1px 1px 0; border-color: #dadfe0; border-style: solid; } td{ padding: 2px 4px 2px 4px !important; white-space: nowrap; border-width: 0 1px 1px 0; border-color: #dadfe0; border-style: solid; } table{ border-collapse: separate; border-spacing: 2px; }</style>

@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/FilmSlider/view/frontend/web/js/film-slider.js

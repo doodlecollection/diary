@@ -1,0 +1,334 @@
+<script src="/st/st.js?v=120720191530" type="text/javascript"></script>
+<link href="/st/st.css?v=120720191530" media="all" rel="stylesheet" type="text/css"/>
+
+<div class="ST-search container" id="searchModalContainer">
+    <div id="searchModal" v-cloak v-if="isOpen">
+        <div :class="{'resultLoading':resultLoading,'noResult':noResult,'somethingWentWrong':somethingWentWrong}"
+             id="overlay"></div>         <!---Tags------->
+        <div class="contain-size" v-show="!resultLoading && !noResult && !somethingWentWrong">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="new_tags">
+                        <div class="clear-fix all_tags">
+                            <div id="st-scroll" class="multiple_box" v-for="filter in textFacetFilters"
+                                 v-if="filter.onTop">
+                                <div class="tag-button"><label class="bt-bg" v-for="item in filter.selected"> <input
+                                        type="checkbox" :value="item" @change="pushFilter()" v-model="filter.selected">
+                                    <span class="filter-tags">{{ item }}</span> </label></div>
+                                <div class="tag-button" v-for="item in getNotSelectedFilters(filter.field)"><label
+                                        class="bt-bg"> <input type="checkbox" :value="item.name"
+                                                              @change="pushFilter(), filterAnalytics('top',filter.field,item.name)"
+                                                              v-model="filter.selected"> <span class="filter-tags">{{ item.name }}</span>
+                                </label></div>
+                                <span @click="breadCrumbScroll(-1)" class="panner hidden-sm hidden-xs" id="tag_left">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </span>
+                                <span @click="breadCrumbScroll(1)" class="panner hidden-sm hidden-xs" id="tag_right">
+                                            <i class="fa fa-chevron-right"></i>
+                                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>         <!---End tags--->           <!-- Results -->
+        <div class="row" v-show="!resultLoading && !noResult && !somethingWentWrong">
+            <div class="col-md-3 grid-left hidden-sm hidden-xs no-side-padding">
+                <div class="sidebar sidebar-main " id="sidebar" style="">
+                    <div class="sidebar__inner">
+                        <div class="filter-header"> Shopping Options</div>
+                        <div class="hidden-sm hidden-xs">
+                            <div id="searchFilter">
+                                <div class="filter-body">
+                                    <div class="top-filter" v-for="filter in textFacetFilters"
+                                         v-show="filter.selected.length > 0 || filter.values.length > 0">
+                                        <div class="filter-title-outer inner-filter-item">
+                                            <h5 @click="filter.isOpen = !filter.isOpen"> {{ filter.title }} <span
+                                                    class="clear" v-show="filter.selected.length > 0"
+                                                    @click="clearFilters(filter.field)">Clear</span>
+                                                <div class="catalog_expand">
+                                                            <span>
+                                                                <i class="fa fa-angle-up" v-show="filter.isOpen"></i>
+                                                            </span>
+                                                    <span>
+                                                                <i class="fa fa-angle-down" v-show="!filter.isOpen"></i>
+                                                            </span>
+                                                </div>
+                                            </h5>
+                                        </div>
+                                        <div>
+                                            <ul :class=`${filter.style}Tabs` :id=`${filter.field}Filters`
+                                                v-if="filter.type === 'multiple'" v-show="filter.isOpen">
+                                                <li class="selected" v-for="item in filter.selected">
+                                                    <div class="checkbox selected"><label :title="item"> <input
+                                                            :value="item" @change="pushFilter()" type="checkbox"
+                                                            v-model="filter.selected"> <span class="cr"><i
+                                                            class="cr-icon fa fa-check"></i></span>
+                                                        <span class="filter-label">{{ item }}</span>
+                                                        <small v-if="filter.style === 'vertical'" class="pull-right">{{getSelectedCount(item,filter.field) }} items</small>
+                                                    </label></div>
+                                                </li>
+                                                <li class="not-selected"
+                                                    v-for="item in getNotSelectedFilters(filter.field)">
+                                                    <div class="checkbox not-selected"><label :title="item.name"> <input
+                                                            :value="item.name"
+                                                            @change="pushFilter(), filterAnalytics('left',filter.field,item.name)"
+                                                            type="checkbox" v-model="filter.selected"> <span class="cr"><i
+                                                            class="cr-icon fa fa-check"></i></span>
+                                                        <span class="filter-label">{{ item.name }}</span>
+                                                        <small v-if="filter.style === 'vertical'" class="pull-right">{{
+                                                            item.count }} items
+                                                        </small>
+                                                    </label></div>
+                                                </li>
+                                            </ul>
+                                            <ul :class=`${filter.style}Tabs` :id=`${filter.field}Filters`
+                                                v-if="filter.type === 'multiple_price'" v-show="filter.isOpen">
+                                                <li v-for="item in filter.values">
+                                                    <div class="checkbox"><label> <input :value="item"
+                                                                                         @change="pushFilter(), filterAnalytics('left',filter.field,item)"
+                                                                                         type="checkbox"
+                                                                                         v-model="filter.selected">
+                                                        <span class="cr"><i class="cr-icon fa fa-check"></i></span> <span class="filter-label">{{ item }}</span>  </label></div>
+                                                </li>
+                                            </ul>
+                                            <ul :class=`${filter.style}Tabs` :id=`${filter.field}Filters`
+                                                v-if="filter.type === 'single'" v-show="filter.isOpen">
+                                                <li v-for="item in filter.values">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input :value="item" @change="pushFilter(), filterAnalytics('left',filter.field,item)" type="checkbox" v-model="filter.selected">
+                                                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                            <span class="filter-label">{{ item }}</span>
+                                                        </label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 grid-main col-xs-12 col-sm-12 plr">                 <!---->
+                <div class="column main" id="result-content">
+                    <div class="result-summary"> <!----Result summery----->
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="text-left show-result" style="">
+                                        <span class="pull-left">
+                                            <span class="st-black _600"> {{ totalHits }}</span>
+                                            <span v-if="totalHits === 1 || totalHits === 0">Result</span>
+                                            <span v-else>Results</span>
+                                            <span v-show="query.trim().length > 0">for</span>
+                                            <span class="st-black _600" v-show="query.trim().length > 0"> {{ query }}</span>
+                                        </span>
+                                    <span class="st-brand-outer">
+                                            <a href="https://www.searchtap.io/?utm_source=doodlecollection&amp;utm_medium=website" target="_blank">
+                                                <div class="st-brand-txt">
+                                                    <span style="font-weight: 300;">Powered by</span> SearchTap
+                                                </div>
+                                                <div class="st-brand"></div>
+                                            </a>
+                                        </span>
+                                </div>
+                            </div>
+                            <div class="col-md-5 hidden-xs hidden-sm ">
+                                <div class="sort-by">
+                                    <div class="form-group">
+                                        <label>Sort by:</label>
+                                        <label class="st-sort-value" for="st-sort-web" @click="sortDisplay = !sortDisplay">{{sortField}}</label>
+                                        <ul id="st-sort-web" v-show="sortDisplay" class="st-sort-ul">
+                                            <li class="st-sort-li" v-for="sort in sorts" @click="sorting(sort.label)">{{sort.label}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!----End result summery----->
+                    <div class="products wrapper grid products-grid">
+                        <ol class="products list items product-items">
+                            <li class="item product product-item" v-for="result in results">
+                                <div class="product-item-info">
+                                    <a :href="result.url" @click="urlClicked(result.name)" class="product photo product-item-photo" tabindex="-1" target="_self">
+                                        <span class="product-image-container" style="width:270px;">
+                                            <div class="st-offer" v-show="getDiscount(result.price,result.discounted_price) > 0">
+                                                <div class="black-border"></div>
+                                                <div class="st-offter-text">{{getDiscount(result.price,result.discounted_price)}}% off</div>
+                                            </div>
+                                            <span class="product-image-wrapper" style="padding-bottom: 111.11111111111%;">
+                                                <img :src="result.cache_image" class="product-image-photo" height="300" width="270">
+                                            </span>
+                                        </span>
+                                    </a>
+                                    <div class="product details product-item-details">
+                                        <div class="product-item-info-box">
+                                            <strong class="product name product-item-name">
+                                                <a :href="result.url" @click="urlClicked(result.name)" class="product-item-link" target="_self">{{result.name | truncateText(70) }}</a>
+                                            </strong>
+                                            <div class="price-box price-final_price" v-if="result.price !== result.discounted_price">
+                                                        <span class="special-price">
+                                                            <span class="price-container price-final_price tax weee">
+                                                                <span class="price-label">Special Price</span>
+                                                                <span class="price-wrapper ">
+                                                                    <span class="price">₹{{ modifyPriceString(result.discounted_price) }}</span>
+                                                                </span>
+                                                            </span>
+                                                        </span>
+                                                <span class="old-price">
+                                                            <span class="price-container price-final_price tax weee">
+                                                                <span class="price-label">Regular Price</span>
+                                                                <span class="price-wrapper ">
+                                                                    <span class="price">₹{{ modifyPriceString(result.price) }}</span>
+                                                                </span>
+                                                            </span>
+                                                        </span>
+                                            </div>
+                                            <div class="price-box price-final_price" v-else>
+                                                        <span class="price-container price-final_price tax weee">
+                                                            <span class="price-wrapper ">
+                                                                <span class="price">₹{{ modifyPriceString(result.price) }}</span>
+                                                            </span>
+                                                        </span>
+                                            </div>
+                                        </div>
+                                        <div class="product-item-inner">
+                                            <div class="product actions product-item-actions product-item-info-box">
+                                                <div class="actions-primary hidden-sm hidden-xs">
+                                                    <button v-if="result.stock_qty > 0" class="action tocart primary" title="Add to Cart" type="submit" @click="addToCart(result)">
+                                                        <span :class=`productno-${result.id}`>Add to Cart</span>
+                                                    </button>
+                                                    <div v-else class="stock unavailable"><span>Out of stock</span></div>
+                                                </div>
+                                                <div class="actions-secondary">
+                                                    <a class="action tocart" v-if="result.stock_qty > 0"  @click="addToCart(result)"></a>
+                                                    <div v-else class="stock unavailable"><span>Out of stock</span></div>
+                                                    <a class="action towishlist" title="Add to Wishlist" @click="addToWishList(result)"><span>Add to Wish List</span></a>
+                                                    <a class="action tocompare" title="Add to Compare" @click="addToCompare(result)"><span>Add to Compare</span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div :class="{'resultEnd':resultEnd, 'loadResults':!resultEnd}" id="results-footer"><span> Results End Here</span></div>
+                </div>
+            </div>
+        </div>         <!-- End Results -->           <!---mobile filter--bottom---->
+        <div class="filter-bar hidden-md hidden-lg">
+            <div class="sortFilterCon" id="sortFilter">
+                <div><span class="tabIcon sortIcon"></span> <select @change="sorting()" class="pdSorting"
+                                                                    id="st-mobile-sort" v-model="sortField">
+                    <option v-for="sort in sorts" :value="sort.label">{{ sort.label }}</option>
+                </select> <span class="disInBlock text-white">{{sortField}}</span></div>
+                <div class="filter_h" @click="openMobileFilters()"><span class="tabIcon filterIcon"></span> <span
+                        class="disInBlock">Filter</span>
+                    <small v-show="totalFilterCount > 0">[{{totalFilterCount}}]</small>
+                    <span class="disInBlock subText ellip"></span></div>
+            </div>
+        </div>         <!---mobile filter--bottom---->           <!----Mobile filter popup--->
+        <div class="hidden-md hidden-lg" id="searchFilterMobile">
+            <div class="mobile-filter-popup" v-show="showMobileFilter">
+                <div class="filter-list">
+                    <div class="filter-header">
+                        <div class="row">
+                            <div class="col-sm-4 col-xs-4 pull-left">
+                                <div class="pull-left filter-cross" @click="showMobileFilter = false"></div>
+                                <div class="filter-text pull-left"><span>Filter</span></div>
+                            </div>
+                            <div class="col-sm-8 col-xs-8 pull-right text-right"><span class="clear-all"
+                                                                                       v-show="totalFilterCount > 0"
+                                                                                       @click="clearFilters()">Clear all</span>
+                                <span class="apply-all" @click="showMobileFilter = false"><a class="apply-btn">Apply</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel pabel-primary behclick-panel" id="accordion1">
+                            <div class="panel-body">
+                                <div class="st-mobile-filters" v-for="filter in textFacetFilters"
+                                     v-show="filter.selected.length > 0 || filter.values.length > 0">
+                                    <div class="panel-heading"><h4 class="panel-title"
+                                                                   @click="filter.isOpen = !filter.isOpen"><i
+                                            class="fa fa-angle-up" v-show="filter.isOpen"></i> <i
+                                            class="fa fa-angle-down" v-show="!filter.isOpen"></i> {{ filter.title }}
+                                    </h4></div>
+                                    <div id="category">                                         <!---->
+                                        <ul class="list-group dynamic filters" :class=`${filter.style}Tabs`
+                                            :id=`${filter.field}mFilters` v-if="filter.type === 'multiple'"
+                                            v-show="filter.isOpen">
+                                            <li class="list-group-item selected" v-for="item in filter.selected">
+                                                <div class="checkbox"><label> <input :value="item"
+                                                                                     @change="pushFilter()"
+                                                                                     type="checkbox"
+                                                                                     v-model="filter.selected">
+                                                    <span class="cr">                                                                         <i
+                                                            class="cr-icon fa fa-check"></i>                                                                     </span>
+                                                    <span class="filter-label">{{ item }}</span>
+                                                    <small v-if="filter.style === 'vertical'" class="pull-right">{{
+                                                        getSelectedCount(item,filter.field) }} items
+                                                    </small>
+                                                </label></div>
+                                            </li>
+                                            <li class="list-group-item not-selected"
+                                                v-for="item in getNotSelectedFilters(filter.field)">
+                                                <div class="checkbox"><label> <input :value="item.name"
+                                                                                     @change="pushFilter(),filterAnalytics('left',filter.field,item.name)"
+                                                                                     type="checkbox"
+                                                                                     v-model="filter.selected">
+                                                    <span class="cr">
+                                                                    <i class="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                    <span class="filter-label">{{ item.name }}</span>
+                                                    <small v-if="filter.style === 'vertical'" class="pull-right">{{
+                                                        item.count }} items
+                                                    </small>
+                                                </label></div>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group dynamic filters" :class=`${filter.style}Tabs`
+                                            :id=`${filter.field}mFilters` v-if="filter.type === 'multiple_price'"
+                                            v-show="filter.isOpen">
+                                            <li class="list-group-item" v-for="item in filter.values">
+                                                <div class="checkbox"><label> <input :value="item"
+                                                                                     @change="pushFilter(), filterAnalytics('left',filter.field,item)"
+                                                                                     type="checkbox"
+                                                                                     v-model="filter.selected">
+                                                    <span class="cr">
+                                                                    <i class="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                    <span class="filter-label">{{ item }}</span>  </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul class="list-group dynamic filters" :class=`${filter.style}Tabs`
+                                            :id=`${filter.field}mFilters` v-if="filter.type === 'single'"
+                                            v-show="filter.isOpen">
+                                            <li class="list-group-item" v-for="item in filter.values">
+                                                <div class="checkbox"><label> <input :value="item"
+                                                                                     @change="pushFilter(), filterAnalytics('left',filter.field,item)"
+                                                                                     type="checkbox"
+                                                                                     v-model="filter.selected">
+                                                    <span class="cr">
+                                                                    <i class="cr-icon fa fa-check"></i>
+                                                                </span>
+                                                    <span class="filter-label">{{ item }}</span>  </label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

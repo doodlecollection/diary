@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<body>
+    <referenceContainer name="product.info.extrahint">
+        <block class="Magento\Catalog\Block\Product\View\Attributes"
+            name="codextracharge.product.view"
+            template="Emipro_CodExtracharge::product/view/extra.phtml" before="-">
+        </block>
+    </referenceContainer>
+</body>

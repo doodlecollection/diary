@@ -1,0 +1,1 @@
+/var/www/html/index/app/design/frontend/TemplateMonster/theme078/TemplateMonster_AjaxCompare/web/js/compare-popup.js

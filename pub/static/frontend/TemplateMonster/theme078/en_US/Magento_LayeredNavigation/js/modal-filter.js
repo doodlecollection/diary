@@ -1,0 +1,1 @@
+/var/www/html/app/design/frontend/TemplateMonster/theme078/Magento_LayeredNavigation/web/js/modal-filter.js

@@ -1,0 +1,18 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:9:{s:10:"pagination";a:5:{s:14:"list_allow_all";s:1:"1";s:16:"pagination_frame";s:1:"5";s:21:"pagination_frame_skip";N;s:24:"anchor_text_for_previous";N;s:20:"anchor_text_for_next";N;}s:14:"invalid_caches";a:4:{s:10:"block_html";N;s:6:"layout";N;s:9:"translate";N;s:9:"full_page";N;}s:4:"head";a:10:{s:13:"default_title";s:16:"Magento Commerce";s:19:"default_description";s:19:"Default Description";s:16:"default_keywords";s:27:"Magento, Varien, E-commerce";s:18:"default_media_type";s:9:"text/html";s:15:"default_charset";s:5:"utf-8";s:10:"demonotice";s:1:"0";s:12:"title_prefix";N;s:12:"title_suffix";N;s:8:"includes";N;s:13:"shortcut_icon";N;}s:20:"search_engine_robots";a:3:{s:14:"default_robots";s:12:"INDEX,FOLLOW";s:27:"default_custom_instructions";s:297:"
+User-agent: *
+Disallow: /index.php/
+Disallow: /*?
+Disallow: /checkout/
+Disallow: /app/
+Disallow: /lib/
+Disallow: /*.php$
+Disallow: /pkginfo/
+Disallow: /report/
+Disallow: /var/
+Disallow: /catalog/
+Disallow: /customer/
+Disallow: /sendfriend/
+Disallow: /review/
+Disallow: /*SID=
+                    ";s:19:"custom_instructions";N;}s:6:"header";a:5:{s:8:"logo_alt";s:16:"Magento Commerce";s:7:"welcome";s:28:"Welcome to our online store!";s:10:"logo_width";N;s:11:"logo_height";N;s:8:"logo_src";N;}s:6:"footer";a:2:{s:9:"copyright";s:148:"&copy; <script type="text/javascript">var mdate = new Date(); document.write(mdate.getFullYear());</script> Magento Demo Store. All Rights Reserved.";s:15:"absolute_footer";N;}s:9:"watermark";a:16:{s:14:"image_position";s:7:"stretch";s:20:"small_image_position";s:7:"stretch";s:18:"thumbnail_position";s:7:"stretch";s:21:"swatch_image_position";s:7:"stretch";s:10:"image_size";N;s:18:"image_imageOpacity";N;s:16:"small_image_size";N;s:24:"small_image_imageOpacity";N;s:17:"swatch_image_size";N;s:25:"swatch_image_imageOpacity";N;s:14:"thumbnail_size";N;s:22:"thumbnail_imageOpacity";N;s:11:"image_image";N;s:17:"small_image_image";N;s:18:"swatch_image_image";N;s:15:"thumbnail_image";N;}s:5:"email";a:6:{s:15:"header_template";s:28:"design_email_header_template";s:15:"footer_template";s:28:"design_email_footer_template";s:8:"logo_alt";N;s:10:"logo_width";N;s:11:"logo_height";N;s:4:"logo";N;}s:5:"theme";a:2:{s:8:"theme_id";s:1:"5";s:9:"ua_regexp";s:6:"a:0:{}";}}

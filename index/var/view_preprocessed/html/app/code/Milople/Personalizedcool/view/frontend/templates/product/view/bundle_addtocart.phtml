@@ -1,0 +1,172 @@
+<?php /** * * Do not edit or add to this file if you wish to upgrade the module to newer * versions in the future. If you wish to customize the module for your * needs please contact us to https://www.milople.com/contact-us.html * * @category Ecommerce * @package Milople_Personlized * @copyright Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved. * @url https://www.milople.com/magento2-extensions/personalized-products-m2.html * **/ ?> <?php $_product = $block->getProduct(); ?> <?php $baseUrl=$block->getUrl(); $baseUrl=$baseUrl.'personalizedcool/index/index'; $helper=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized'); $isRestrictedAreaDrawn=$helper->isRestrictedAreaDrawn($_product,'AddToCart'); $status=$helper->getConfig('personalizedcool/license_status_group/status'); $enableFromProduct=$_product->getAllowPersonalization(); $sideCount=$helper->getSideCount($_product); $isGlobalRestrictedAllowed=$helper->getConfig('personalizedcool/general_setting_group/enable_area'); $counterLoop = 0; $enableTemplate = $helper->getConfig('personalizedcool/template_setting/template_status'); $pricePerText=$helper->getConfig('personalizedcool/text_setting_group/price_per_text'); $pricePerImage=$helper->getConfig('personalizedcool/Image_setting_group/personalized_price_per_image'); $currencyCode = $helper->_currency->getCurrencySymbol(); $p_id = $_product->getId(); $personalization_mode=$helper->getConfig('personalizedcool/general_setting_group/personalization_mode'); $isProductHasSide = $helper->isProductHasSide($_product); $name_number_status = $helper->getConfig('personalizedcool/name_number_setting/name_number_status'); $product_allow_name_number = $_product->getAllowNameNumber(); $width=$helper->getConfig('personalizedcool/area_setting_group/width'); $eligible_change_quantity = 0; if((($product_allow_name_number && $name_number_status == 'specific_products') || $name_number_status == 'all_products') && $enableFromProduct && $status){ $eligible_change_quantity = 1; } ?> <?php $buttonTitle = __('Add To Cart'); ?> <?php if ($_product->isSaleable()): ?> <div class="box-tocart"><?php echo $block->getChildHtml('', true) ?> <div class="fieldset"><?php if ($block->shouldRenderQuantity()): ?> <div class="field qty"><label class="label" for="qty"><span><?php /* @escapeNotVerified */ echo __('Qty') ?></span></label> <div class="control"><input type="number" name="qty" id="qty" maxlength="12" value="<?php /* @escapeNotVerified */ echo $block->getProductDefaultQty() * 1 ?>" title="<?php /* @escapeNotVerified */ echo __('Qty') ?>" class="input-text qty" data-validate="<?php echo $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>" /></div></div><?php endif; ?> <div class="actions"><button type="submit" title="<?php /* @escapeNotVerified */ echo $buttonTitle ?>" class="action primary tocart" id="product-addtocart-button"><span><?php /* @escapeNotVerified */ echo $buttonTitle ?></span></button> <script>
+						require(['jquery'], function(jQuery) {
+						jQuery('#product-addtocart-button').click(function(){
+							jQuery('.radius-effect, .spacing-effect, .reverse-effect').css('display', 'none');
+							<?php if($eligible_change_quantity): ?>
+								name_number_counter = name_number_counter * <?php echo $block->getProductDefaultQty(); ?>;
+								name_number_counter = parseInt(name_number_counter);
+								jQuery('#qty').attr('value', name_number_counter);
+								var n = jQuery("input[name^= 'milople_name']").length;
+								var name_array = jQuery("input[name^='milople_name']");
+								var number_array = jQuery("input[name^='milople_number']");
+								var size_array = jQuery("input[name^='milople_size']");
+								var name_value = "";
+								var number_value = "";
+								var size_value = "";
+								var flag = 0;
+								for(i=0;i<n;i++)
+								{
+									if(flag == 0)
+									{
+											 name_value += name_array[i].value;
+											 number_value += number_array[i].value;
+											 size_value += size_array[i].value;
+											 flag++;
+											 continue;
+									}
+									 name_value +=  "," + name_array[i].value;
+									 number_value += "," + number_array[i].value;
+									 size_value += "," + size_array[i].value;
+								}
+								jQuery("#pass_name").val(name_value);
+								jQuery("#pass_number").val(number_value);
+								jQuery("#pass_size").val(size_value);
+								
+							<?php endif;?> });  
+						});</script></div></div><input name="bundle_price" id="bundle_price" value="" type="hidden"><?php $childeren_items_id = $_product->getTypeInstance()->getChildrenIds($_product->getId(), true); ?></div><?php endif; ?> <?php if ($block->isRedirectToCartEnabled()) : ?> <script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/product/view/validation": {
+                "radioCheckboxClosest": ".nested"
+            }
+        }
+    }</script><?php else : ?> <script>
+	baseURL="<?php echo $baseUrl;?>";
+   require([
+    'jquery',
+    'mage/mage',
+    'Magento_Catalog/product/view/validation',
+    'Magento_Catalog/js/catalog-add-to-cart'
+	], function($) {
+		'use strict';
+		$('#product_addtocart_form').mage('validation', {
+			radioCheckboxClosest: '.nested',
+			submitHandler: function(form) {
+				var widget = $(form).catalogAddToCart({
+					bindSubmit: false
+				});
+				<?php if(($status && $enableFromProduct) || ($_product->getTypeId()=='personalized' && $status)): ?>
+				
+				var t_obj = document.getElementById('tObject').value;
+				var price_text = <?php echo $pricePerText; ?>;
+				var i_obj = document.getElementById('iObject').value;
+				var price_image = <?php echo $pricePerImage; ?>;
+				var product_price = $('#product-price-<?php echo $p_id; ?> span').text();
+				var fields = product_price.split('$');
+				var currency_symbol = fields[0];
+				var product_price = fields[1];
+				var selection_price = parseInt(product_price);
+				var customized_cost = selection_price + (t_obj * price_text) + (i_obj * price_image);
+				var cur_code = '<?php echo $currencyCode;?>';
+				var res_price = cur_code.concat(customized_cost);
+				document.getElementById('bundle_price').value = selection_price;
+				jQuery('span.price-configured_price > span.price-wrapper > span.price').text(res_price);
+				<?php if(!$isRestrictedAreaDrawn || !$isGlobalRestrictedAllowed): ?>
+				
+				
+				noArea(widget, form,baseURL);
+				<?php else : ?>
+				
+				multipleArea(widget, form);
+				<?php endif;  ?> <?php else :?>
+				
+				widget.catalogAddToCart('submitForm', $(form));
+				return false;
+				<?php endif; ?> } 
+		}); 
+	});
+	multipleArea = function(widget, form) {
+		var zoomCanvas = {};
+		var zcanvas = {};
+		var imgUrl = {};
+		
+		var sideCount = <?php echo $sideCount; ?>;
+		<?php
+							 $numItems = count($_product->getMediaGalleryImages());
+							 $lastItem = $numItems - 1;
+							 foreach ($_product->getMediaGalleryImages() as $image) {
+								if($helper->isImageHasArea($_product->getId(),$image->getId())=='allowed'){
+								$id=$image->getId();
+								
+							?> if (sideCount == 1) {
+			imgUrl[<?php echo $id ?>] = document.getElementById("imageDiv").src;
+		} else {
+			imgUrl[<?php echo $id; ?>] = jQuery("#image-" + <?php echo $id; ?>).attr("data-main-image-src");
+		}
+		zcanvas[<?php echo $id; ?>] = jQuery('#product-zoom-canvas-' + <?php echo $id; ?>);
+		zcanvas[<?php echo $id; ?>].innerHTML = '';
+		jQuery('#product-zoom-container-' + <?php echo $id; ?>).empty();
+		jQuery('#product-zoom-container-' + <?php echo $id; ?>).append(zcanvas[<?php echo $id; ?>]);
+		zoomCanvas[<?php echo $id; ?>] = new fabric.Canvas('product-zoom-canvas-' + <?php echo $id; ?>);
+		zoomCanvas[<?php echo $id; ?>].setBackgroundImage(imgUrl[<?php echo $id; ?>], zoomCanvas[<?php echo $id; ?>].renderAll.bind(zoomCanvas[<?php echo $id; ?>]));
+		canvasObjects[<?php echo $id; ?>].deactivateAll();
+		canvasObjects[<?php echo $id; ?>].renderAll();
+		setTimeout(function() {
+			var render_area_left = parseFloat(document.getElementById("drawingArea-" + [<?php echo $id; ?>]).style.left);
+			if (window.matchMedia('(max-width: 500px)').matches)
+			{
+				var screen_width = screen.width;
+				var img_width = '<?php echo $width; ?>';
+				var render_aspect_ratio = parseFloat(img_width/screen_width);
+				render_area_left = parseFloat('<?php echo $helper->getCoordinates($_product->getId(),$image->getId(),'X1');?>');
+				render_area_left = render_area_left * render_aspect_ratio;
+				if(render_area_left > ((img_width * render_aspect_ratio)-img_width))
+				{
+					render_area_left = parseFloat('<?php echo $helper->getCoordinates($_product->getId(),$image->getId(),'X1');?>');
+				}
+			}
+			
+			fabric.Image.fromURL(canvasObjects[<?php echo $id; ?>].toDataURL(), function(oImg) {
+				zoomCanvas[<?php echo $id; ?>].add(oImg.set({
+					left: render_area_left,
+					top: parseInt(document.getElementById("drawingArea-" + [<?php echo $id; ?>]).style.top)
+				}));
+				
+				var imagearray = [];
+				zoomCanvas[<?php echo $id; ?>].renderAll();
+				zoomCanvas[<?php echo $id; ?>].calcOffset();
+				imagearray.push(zoomCanvas[<?php echo $id; ?>].toDataURL("image/png"));
+				if (canvasObjects[<?php echo $id; ?>].getObjects().length >= 1) {
+					imagearray.push(canvasObjects[<?php echo $id; ?>].toDataURL());
+				} else {
+					imagearray.push("blank");
+				}
+				
+				jQuery.ajax({
+					type: 'POST',
+					url: "<?php echo $baseUrl; ?>",
+					data: {
+						'imagedata[]': imagearray
+					},
+					beforeSend: function() {
+						jQuery('#product-addtocart-button').find('span').text("Adding...");
+						jQuery('#product-addtocart-button').addClass('disabled');
+					},
+					success: function(result) {
+						var imageElement = sideCount == 1 ? document.getElementById("image_html") : document.getElementById("image-" + [<?php echo $id; ?>]);
+						imageElement.value = result;
+						<?php if($lastItem == $counterLoop + 1 && $sideCount > 1) { ?>
+						setTimeout(function() {
+							widget.catalogAddToCart('submitForm', jQuery(form));
+							return false;
+						}, 5000);
+						<?php } ?> <?php if($lastItem == 0 || $sideCount == 1) { ?>
+						widget.catalogAddToCart('submitForm', jQuery(form));
+						return false;
+						<?php } ?> }
+				}); 
+
+			}); 
+
+		}, 100);
+		<?php } $counterLoop++; }  ?> }</script><?php endif; ?> <?php if($personalization_mode != 'product_page' && $enableFromProduct):?> <div id="popup-model" style="display:none; background:white;"><header class="modal-header"><button class="done-button done-button-black small-screen" id="testa" >Done</button> <button id="refresh_canvas_button" title="Refresh" type="button"></button> <button class="action-close" data-role="closeBtn" type="button"><span>Close</span></button> <?php if($isProductHasSide && $isGlobalRestrictedAllowed) { ?> <ul class="product-thumbs float_left"><?php $i=0; foreach ($_product->getMediaGalleryImages() as $image) { $imageUrl = $image->getUrl(); if($helper->isImageHasArea($_product->getId(),$image->getId())=="allowed"){ ?> <li> <a id="side-<?php echo $i;?>" data-main-image-src="<?php echo $imageUrl ?>" data-main-canvas-id="<?php echo $image->getId() ?>" ><img src="<?php echo $imageUrl ?>" sort-order="0" title="" style="width:50px; height:60px;cursor:pointer;" /></a></li> <?php } $i++; } ?></ul><?php } ?></header><form id="enquiry_form"><?php echo $this->getLayout()->createBlock("Milople\Personalizedcool\Block\Product\View\Type\Product")->setTemplate("Milople_personalizedcool::product/view/popup-gallery.phtml")->toHtml(); ?></form></div><?php endif; ?>

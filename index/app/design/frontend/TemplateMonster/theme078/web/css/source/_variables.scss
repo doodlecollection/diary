@@ -1,0 +1,111 @@
+//
+// Grid system
+// --------------------------------------------------
+
+$column-count: 12;
+$column-width: 80px;
+$column-xwidth: 120px;
+$gutter-width: 30px;
+
+$row-ws: 0;
+
+$container-xs: 300px;
+$container-sm: 720px + $gutter-width;
+$container-md: 940px + $gutter-width;
+$container-lg: 1150px + $gutter-width;
+$container-xl: $column-count*$column-width + $gutter-width*($column-count - 1);
+$container-xxl: $column-count*$column-xwidth + $gutter-width*$column-count;
+
+// Layouts
+$layout-boxed-width: 1920px;
+
+// Resolutions
+$screen-xs-min: 480px;
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-lg-min: 1200px;
+$screen-xl-min: 1400px;
+$screen-xxl-min: 1800px;
+
+$screen-mob-min: $screen-md-min; // break-point for mobile styles
+
+// Fonts
+$default-font-family: 'PT Sans Narrow', sans-serif;
+$secondary-font-family: 'PT Sans', sans-serif;;
+$special-font-family: 'Dancing Script', cursive;
+$default-font-weight: 400;
+$default-font-size: 14px;
+$default-line-height: 1.5em;
+
+// Icons
+//$material-icons: 'Material Icons';
+//$icon-mini: 'Nucleo Mini';
+//$icon-outline: 'Nucleo Outline';
+//$default-icon-family: 'Nucleo Mini';
+//$secondary-icon-family: 'Linearicons';
+//$out-icon-family: 'fl-outicons';
+//$fa: 'FontAwesome';
+
+// Colors
+$white: #FFF;
+$black: #000;
+$default: #aaaaaa;
+
+$allow: #3bb141;
+$denied: #ff5555;
+$attention: #ff5555;
+
+$bg-light: #f5f5f5;
+$bg-dark: #010100;
+
+$primary: #ffe138;
+$accent: #ffd900;
+$secondary-color: #ff383a;
+$third-color: $primary;
+$special-color: #f9e126;
+// $accent: #3bb141;
+$text-dark: #010100;
+$text-light: #c7c7c7;
+$text-lightest: #b4b4b4;
+$unactive: #999999;
+
+$review-star: #ffe138;
+
+$border-color: #f5f5f5;
+
+
+// Smart header vars
+
+$sm-header-main-color: $primary;
+$sm-header-contrast-color: $white;
+$sm-header-text-color: $text-light;
+$sm-header-hover-color: $primary;
+$sm-header-panel-height: 56px;
+
+$sm-header-item-fontsize: 14px;
+$sm-header-item-lineheight: 16px;
+$sm-header-item-padding: 17px;
+$sm-header-item-border: 1px solid $border-color;
+$sm-header-item-bg-1: #f1f1f1;
+$sm-header-item-bg-2: #e7e7e7;
+
+$rd-navbar-panel-height: 56px;
+
+$default-header-shadow: 0 3px 5px 0 rgba(0, 0, 0, .25);
+
+//Indents
+$indent-base: 2rem;
+$indent-large:  $indent-base * 2;
+$indent-small:  $indent-base / 2;
+
+//Links
+$link-regular:  $primary;
+$link-hover:    $accent;
+$link-active:   $text-dark;
+$link-alt:      $default;
+
+//Transition
+$default-transition: .3s ease;
+
+//Inputs
+$input-bg-color:        $white;

@@ -1,0 +1,1 @@
+/var/www/html/app/code/Webkul/Walletsystem/view/frontend/web/js/Wkwalletsystem.js

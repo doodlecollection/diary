@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:1:{s:7:"general";a:3:{s:12:"catalog_page";a:3:{s:7:"enabled";s:1:"1";s:6:"format";s:16:"%D days %H:%M:%S";s:8:"selector";s:18:".product-item-name";}s:12:"product_page";a:3:{s:7:"enabled";s:1:"1";s:6:"format";s:16:"%D days %H:%M:%S";s:8:"selector";s:10:".old-price";}s:6:"widget";a:3:{s:7:"enabled";s:1:"1";s:6:"format";s:16:"%D days %H:%M:%S";s:8:"selector";s:18:".product-item-name";}}}

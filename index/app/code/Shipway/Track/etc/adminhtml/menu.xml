@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Shipway::top_level" module="Shipway_Track" resource="Magento_Backend::content" sortOrder="9999" title="Shipway"/>
+		<add action="couriermapping/index/index" id="Shipway_Track::index_index" module="Shipway_Track" parent="Shipway::top_level" resource="Shipway_Track::index_index" sortOrder="9999" title="index index"/>
+	</menu>
+</config>

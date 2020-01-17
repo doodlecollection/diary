@@ -1,0 +1,78 @@
+<?php /** * * Do not edit or add to this file if you wish to upgrade the module to newer * versions in the future. If you wish to customize the module for your * needs please contact us to https://www.milople.com/contact-us.html * * @category Ecommerce * @package Milople_Personlized * @copyright Copyright (c) 2017 Milople Technologies Pvt. Ltd. All Rights Reserved. * @url https://www.milople.com/magento2-extensions/personalized-products-m2.html * **/ ?> <?php $p_id = $this->getRequest()->getParam('id'); $product = $block->getProductById($p_id); $p_url = $product->getProductUrl(); $p_price = $product->getFinalPrice(); $helper=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized'); $width=$helper->getConfig('personalizedcool/area_setting_group/width'); $height=$helper->getConfig('personalizedcool/area_setting_group/height'); $status=$helper->getConfig('personalizedcool/license_status_group/status'); $isGlobalRestrictedAllowed=$helper->getConfig('personalizedcool/general_setting_group/enable_area'); $enableFromProduct=$product->getAllowPersonalization(); $isRestrictedAreaDrawn=$helper->isRestrictedAreaDrawn($product); $imageHelper = $this->helper('Magento\Catalog\Helper\Image'); if (!$product->getImage() || $product->getImage() == 'no_selection') { $image = $imageHelper->getDefaultPlaceholderUrl('image'); } else { $image = 'swatch_image'; $url=$imageHelper->init($product, $image) ->constrainOnly(FALSE) ->keepAspectRatio(false) ->resize($width,$height) ->keepFrame(FALSE)->getUrl(); } $flag="not allowed"; $flagForHide="hide"; $count=1; $sideCount=$helper->getSideCount($product); $width_array = array(); ?> <script>
+	side_counter = '<?php echo $sideCount;?>';
+		if (window.matchMedia('(max-width: 500px)').matches)
+		{
+			var screen_width = screen.width;
+			canvas_objects_aspect_ratio = parseFloat(screen_width / <?php echo $width; ?>);
+		}
+		onSelected = function(e) {
+        proper_object_selected = true;
+        if (e.target.get('type') == 'curvedText' || e.target.get('type') == 'text') {
+            select_text_styles();
+            change_add_update_buttons(e.target.get('text'), 'none', 'inline-block', 'silver');
+        }
+    }
+	  onDeSelected = function() {
+        change_add_update_buttons('', 'inline-block', 'none', 'silver');
+        deselect_text_styles();
+    }
+    onModified = function(e) {
+        if (e.target.get('type') == 'curvedText' || e.target.get('type') == 'text') {
+            e.target.setFontSize(parseFloat(e.target.fontSize * e.target.scaleX).toFixed(2));
+            e.target.setScaleX(1);
+            e.target.setScaleY(1);
+            e.target.setCoords();
+            canvas.renderAll();
+        }
+    }</script><style> .gallery_and_tool{ width:100%; display:inline-block; }</style><div class="gallery_and_tool"><?php if(($status && $enableFromProduct) || ($product->getTypeId()=='personalized' && $status)): ?> <?php if (!$isRestrictedAreaDrawn || !$isGlobalRestrictedAllowed) : ?> <div class="gallery-placeholder no-area popup-gallery" ><img style="float:left;width:<?php echo $width ?>px;height:<?php echo $height; ?>px" src="<?php echo $url ?>" id="imageDiv"><div id="no-area" ><div id="container"><canvas id="imageCanvas" class="canvas" ></canvas></div><div id="product-zoom-container" style="display: none;"><canvas id="product-zoom-canvas" width="<?php echo $width ?>" height="<?php echo $height?>"></canvas></div></div></div><script>
+						canvas = new fabric.Canvas('imageCanvas');
+						width = <?php echo $width ?>;
+						height = <?php echo $height ?>;
+						canvas.setHeight(height);
+						canvas.setWidth(width);
+						canvas.renderAll();
+						require(['jquery'], function(jQuery) {
+							jQuery(document).ready(function() {
+								canvas.on({
+									'object:moving': onSelected,
+									'object:selected': onSelected,
+									'object:modified': onModified,
+									'selection:created': onSelected,
+									'selection:cleared': onDeSelected
+								});
+							});
+						});</script><?php else: ?> <div class="gallery-placeholder new-page-gallery-placeholder popup-gallery"><img style="width:<?php echo $width ?>px;height:<?php echo $height; ?>px" src="<?php echo $url ?>" id="imageDiv" style="width:<?php echo $width;?>px;height:<?php echo $height ?>px"><?php foreach ($product->getMediaGalleryImages() as $image) : ?> <?php if($flag=="not allowed"){ $flag=$helper->isImageHasArea($product->getId(),$image->getId()); if($flag=="allowed" ){ $flagForHide='show'; } } ?> <script>
+						require(['jquery'],function(jQuery){
+								 jQuery(document).ready(function() {
+								height_for_restricted = '<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Height');?>';
+								width_for_restricted = '<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Width'); ?>';
+								left_for_restricted = '<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'X1');?>';
+								top_for_restricted = '<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Y1');?>';
+								width_for_restricted = width_for_restricted * canvas_objects_aspect_ratio;
+								left_for_restricted = left_for_restricted * canvas_objects_aspect_ratio;
+								top_for_restricted = top_for_restricted * canvas_objects_aspect_ratio;
+								 });
+						});</script><?php if($helper->isImageHasArea($product->getId(),$image->getId())=='allowed'): ?> <div id="drawingArea-<?php echo $image->getId() ?>" class="designAreasDiv" style="top: <?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Y1'); ?>px; position: absolute;z-index: 10;border: 1px dashed; <?php if($flagForHide =='hide'): ?> display:none; <?php endif; ?>"><canvas id="imageCanvas-<?php echo $image->getId() ?>" width=<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Width') ?> height=<?php echo $helper->getCoordinates($product->getId(),$image->getId(),'Height') ?>></canvas></div><div id="product-zoom-container-<?php echo $image->getId() ?>" style="display: none;"><canvas id="product-zoom-canvas-<?php echo $image->getId() ?>" width="<?php echo $width ?>" height="<?php echo $height?>"></canvas></div><script>
+								require(['jquery'],function(jQuery){
+									
+								 jQuery(document).ready(function() {
+									window.canvasObjects[<?php echo $image->getId() ?>] = new fabric.Canvas('imageCanvas-'+<?php echo $image->getId() ?>);
+									 <?php if($flag == "allowed"): $flagForHide='hide' ?>
+										 jQuery('#imageDiv').attr('src','<?php echo $helper->resize($image->getFile(),$width,$height) ?>');
+										 canvas=window.canvasObjects[<?php echo $image->getId() ?>];
+											 canvas.on({
+																'object:moving': onSelected,
+																'object:selected': onSelected,
+																'object:modified': onModified,
+																'selection:created': onSelected,
+																'selection:cleared': onDeSelected
+														});
+									 <?php $flag='done'; endif; ?> window.canvasObjects[<?php echo $image->getId() ?>].setWidth(width_for_restricted);
+									 window.canvasObjects[<?php echo $image->getId() ?>].setHeight(height_for_restricted);
+									 jQuery('#drawingArea-'+<?php echo $image->getId();?>).css('overflow', 'hidden');
+									 jQuery('#drawingArea-'+<?php echo $image->getId();?>).css('height', height_for_restricted);
+									 jQuery('#drawingArea-'+<?php echo $image->getId();?>).css('width', width_for_restricted);
+									 jQuery('#drawingArea-'+<?php echo $image->getId();?>).css('left', left_for_restricted);
+									 jQuery('.canvas-container').css('display', 'contents');
+								});
+							 });</script><?php endif; ?> <?php $count++; endforeach; ?></div><?php endif;?> <?php else: ?> <?php echo $helper->getMedia(); ?> <?php endif; ?> <?php $helper = $this->personalized_helper; $personalizer_design = $helper->getConfig('personalizedcool/general_setting_group/personalizer_design'); ?> <?php echo $this->getLayout()->createBlock("Milople\Personalizedcool\Block\Product\View\Type\Product")->setTemplate("Milople_Personalizedcool::product/view/personalizer_popup.phtml")->toHtml(); ?></div><style> #popup-model .gallery-placeholder { float: left; height: <?php echo $height . 'px;' ?>; }</style>

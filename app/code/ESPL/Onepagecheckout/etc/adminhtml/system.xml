@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Backend/etc/system_file.xsd">
+    <system>
+       <!-- Add new Tab -->
+       <tab id="espl_opc" translate="label" sortOrder="300">
+        <label>ESPL Checkout</label>
+    </tab>
+    <section id="espl_opc" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+        <label>ESPL Checkout Suite</label>
+        <tab>espl_opc</tab>
+        <resource>ESPL_Onepagecheckout::system_config</resource>
+        <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>General Settings</label>
+            <field id="enable_in_frontend" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Enable</label>
+                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            </field>
+            <field id="espl_title" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Meta Title</label>
+            </field>
+
+            <field id="espl_discount_code_enable" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Display Discount Block</label>
+                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            </field>
+        </group>
+    </section>
+</system>
+</config>

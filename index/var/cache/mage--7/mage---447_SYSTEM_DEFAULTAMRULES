@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1552308637;s:6:"expire";i:9999999999;s:4:"tags";s:37:"447_CONFIG_SCOPES,447_CONFIG,447_MAGE";}
+a:4:{s:10:"skip_price";a:3:{s:18:"skip_special_price";s:1:"1";s:15:"skip_tier_price";s:1:"0";s:31:"skip_special_price_configurable";s:1:"0";}s:18:"discount_breakdown";a:1:{s:6:"enable";s:1:"1";}s:7:"general";a:1:{s:14:"options_values";s:1:"1";}s:14:"discount_debug";a:2:{s:12:"enable_debug";s:1:"0";s:10:"allowed_ip";N;}}

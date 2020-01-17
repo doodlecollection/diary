@@ -1,0 +1,50 @@
+<?php /** * * Do not edit or add to this file if you wish to upgrade the module to newer * versions in the future. If you wish to customize the module for your * needs please contact us to https://www.milople.com/magento-extensions/contacts/ * * @category Ecommerce * @package Milople_Personalized * @copyright Copyright (c) 2016 Milople Technologies Pvt. Ltd. All Rights Reserved. * @url https://www.milople.com/magento-extensions/personalizedcool-products.html * **/ ?> <?php if ($_item = $block->getItem()): ?> <?php $id=$_item->getId(); $personalized=$this->helper('Milople\Personalizedcool\Helper\Product\View\Personalized'); $fileNames=$_item->getBuyRequest()->getImageHtml(); $fileNameCheck = $fileNames; $fileNames=$personalized->getImageName($fileNames); $fileName = implode(",", $fileNames); $rawFileName=$_item->getBuyRequest()->getRawImages(); $rawFileName=str_replace('"', '',$rawFileName); $downloadUrl= $block->getUrl('personalizedcool/index/download',array('names'=>$fileName)); $rawDownloadUrl= $block->getUrl('personalizedcool/index/rawdownload',array('names'=>$rawFileName)); $fileName=$personalized->getImageMediaUrl($fileName); $counter = 1; ?> <div id="order_item_<?php /* @escapeNotVerified */ echo $_item->getId() ?>_title" class="product-title"><?php echo $block->escapeHtml($_item->getName()) ?> <?php if($fileNameCheck!=''): ?> <a class="preview-link" data-modal="open-<?php echo $id ?>"><?php echo $block->escapeHtml(__('PREVIEW')); ?></a> <a class="download-link" href="<?php echo $downloadUrl; ?>" ><?php echo $block->escapeHtml(__('DOWNLOAD')); ?></a> <?php if($rawFileName!='0'):?> <a class="download-link" href="<?php echo $rawDownloadUrl; ?>" ><?php echo $block->escapeHtml(__('UPLOADED IMAGES')); ?></a> <?php endif;?> <div class="modal-wrapper" data-modal="wrapper-<?php echo $id ?>"><div class="modal-content"><a class="close-modal" data-modal="close-<?php echo $id ?>">&times;</a> <div class="text"><div class="callbacks_container"><ul class="rslides" id="productpersonalized-<?php echo $id ?>"><?php foreach ($fileName as $image) { ?> <li> <img src=<?php echo $image ?> /></li> <?php $counter++; } ?></ul></div></div></div></div><?php endif; ?></div><div class="product-sku-block"><span><?php /* @escapeNotVerified */ echo __('SKU') ?>:</span> <?php echo implode('<br />', $this->helper('Magento\Catalog\Helper\Data')->splitSku($block->escapeHtml($block->getSku()))); ?></div><?php if ($block->getOrderOptions()): ?> <dl class="item-options"><?php foreach ($block->getOrderOptions() as $_option): ?> <dt><?php /* @escapeNotVerified */ echo $_option['label'] ?>:</dt><dd><?php if (isset($_option['custom_view']) && $_option['custom_view']): ?> <?php /* @escapeNotVerified */ echo $block->getCustomizedOptionValue($_option); ?> <?php else: ?> <?php if( $_option['label'] == 'Name & Number Details'): ?> <?php echo ($_option['value']); ?> <?php else : ?> <?php $_option = $block->getFormattedOption($_option['value']); ?> <?php /* @escapeNotVerified */ echo $_option['value']; ?><?php if (isset($_option['remainder']) && $_option['remainder']): ?><span id="<?php /* @escapeNotVerified */ echo $_dots = 'dots' . uniqid()?>"> ...</span><span id="<?php /* @escapeNotVerified */ echo $_id = 'id' . uniqid()?>"><?php /* @escapeNotVerified */ echo $_option['remainder'] ?></span> <script>
+                                require(['prototype'], function() {
+                                    $('<?php /* @escapeNotVerified */ echo $_id ?>').hide();
+                                    $('<?php /* @escapeNotVerified */ echo $_id ?>').up().observe('mouseover', function(){$('<?php /* @escapeNotVerified */ echo $_id ?>').show();});
+                                    $('<?php /* @escapeNotVerified */ echo $_id ?>').up().observe('mouseover', function(){$('<?php /* @escapeNotVerified */ echo $_dots?>').hide();});
+                                    $('<?php /* @escapeNotVerified */ echo $_id ?>').up().observe('mouseout',  function(){$('<?php /* @escapeNotVerified */ echo $_id ?>').hide();});
+                                    $('<?php /* @escapeNotVerified */ echo $_id ?>').up().observe('mouseout',  function(){$('<?php /* @escapeNotVerified */ echo $_dots ?>').show();});
+                                });</script><?php endif; ?> <?php endif; ?> <?php endif; ?></dd><?php endforeach; ?></dl><?php endif; ?> <?php echo $block->escapeHtml($_item->getDescription()) ?> <?php endif; ?> <script>
+	
+require(["jquery"], function (jQuery) {
+	<?php if($fileNameCheck!=''): ?>
+    var jQuery = jQuery.noConflict();
+		jQuery(function () {
+		jQuery("#productpersonalized-<?php echo $_item->getId() ?>").responsiveSlides({
+			auto: false,
+			pager: false,
+			nav: true,
+			speed: 500,
+			namespace: "callbacks",
+			before: function () {
+			},
+			after: function () {
+			}
+		});
+		var Modal = (function() {
+			var modalOpen = document.querySelector('[data-modal="open-<?php echo $_item->getId() ?>"]'),
+			modalClose = document.querySelector('[data-modal="close-<?php echo $_item->getId() ?>"]'),
+			modalWrapper = document.querySelector('[data-modal="wrapper-<?php echo $_item->getId() ?>"]');
+			return {
+				init: function() {
+					this.open();
+					this.close();
+				},
+				open: function() {
+					modalOpen.onclick = function(e) {
+						e.preventDefault;
+						modalWrapper.classList.add("modal-opened");
+					}
+				},
+				close: function() {
+					modalClose.onclick = function(e) {
+						e.preventDefault;
+						modalWrapper.classList.remove("modal-opened");
+					}
+				}
+			}
+		}());
+		Modal.init();
+	});
+	<?php endif; ?> });</script>

@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/PromoBanners/view/frontend/web/js/injector.js

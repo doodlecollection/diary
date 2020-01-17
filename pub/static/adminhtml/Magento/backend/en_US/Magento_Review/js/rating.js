@@ -1,0 +1,1 @@
+/var/www/html/vendor/magento/module-review/view/adminhtml/web/js/rating.js

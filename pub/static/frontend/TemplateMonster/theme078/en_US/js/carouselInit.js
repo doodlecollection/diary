@@ -1,0 +1,1 @@
+/var/www/html/app/design/frontend/TemplateMonster/theme078/web/js/carouselInit.js

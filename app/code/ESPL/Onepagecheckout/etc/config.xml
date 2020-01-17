@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+     <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+        <default>
+            <espl_opc>
+                <general>
+                    <enable_in_frontend>1</enable_in_frontend>
+                    <espl_title>ESPL Checkout</espl_title>
+                    <espl_discount_code_enable>1</espl_discount_code_enable>
+                </general>
+            </espl_opc>
+        </default>
+    </config>

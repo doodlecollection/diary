@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BSS Commerce Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://bsscommerce.com/Bss-Commerce-License.txt
+ *
+ * @category   BSS
+ * @package    Bss_CancelOrder
+ * @author     Extension Team
+ * @copyright  Copyright (c) 2017-2018 BSS Commerce Co. ( http://bsscommerce.com )
+ * @license    http://bsscommerce.com/Bss-Commerce-License.txt
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <css src="Bss_CancelOrder::css/popup.css"/>
+    </head>
+    <body>
+        <referenceBlock name="sales.order.history" template="Bss_CancelOrder::history.phtml">
+        	<block class="Bss\CancelOrder\Block\Template" name="cancel_link" template="Bss_CancelOrder::cancel_link.phtml" ifconfig="bss_cancelorder/general/active"/>
+       		<block class="Bss\CancelOrder\Block\Template" name="cancel_popup" template="Bss_CancelOrder::popup.phtml" ifconfig="bss_cancelorder/general/active"/>
+        </referenceBlock>
+    </body>
+</page>

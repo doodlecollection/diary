@@ -1,0 +1,1 @@
+/var/www/html/index/app/code/TemplateMonster/AjaxCompare/view/frontend/web/js/tm-compare-ajax.js

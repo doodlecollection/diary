@@ -1,0 +1,1 @@
+/var/www/html/app/code/Milople/Personalizedcool/view/frontend/web/js/carousel.js

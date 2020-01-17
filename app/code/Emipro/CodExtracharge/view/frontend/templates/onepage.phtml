@@ -1,0 +1,84 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<!-- Lable Start -->
+<script type="text/javascript">
+	require(['jquery', 'jquery/ui'], function($){
+     setTimeout(function() {
+    $('#hidemessage').fadeOut(3000);
+	}, 15000);
+ 	});
+</script>
+
+        <?php
+        $objManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $helper=$objManager->create('Emipro\CodExtracharge\Helper\Data');
+        $paymentMethod = $helper->getConfig('payment/cashondelivery/active');
+        $codapply = $helper->getConfig('payment/cashondelivery/applycodextracharge');
+        $specificCount = $helper->getConfig('payment/cashondelivery/specificcountry');
+        $quote=$objManager->create('Magento\Checkout\Model\Cart')->getQuote();
+        $specificCountCond = 1;
+        if($specificCount != ""){
+            $cntry = $quote->getShippingAddress()->getCountryId();
+            $countArr = explode(",", $specificCount);
+            $specificCountCond = (in_array($cntry, $countArr))?1:0;
+        }
+        $cod=$objManager->create('Emipro\CodExtracharge\Helper\Data')->codCharges($quote);
+        $balance =$cod["fees"];
+        $priceHelper = $objManager->create('Magento\Framework\Pricing\Helper\Data');
+        $formattedPrice = $priceHelper->currency($balance, true, false);
+        $codc=$objManager->create('Emipro\CodExtracharge\Helper\Data')->codCharges();
+        if($codapply == 1 && $specificCountCond){
+            if($paymentMethod == 1){
+                if($cod["fees"]==0 && $cod["status"]==1){
+        ?>
+                    <div id="hidemessage" style="margin:2% 0%;">Free Cash on Delivery.</div>
+        <?php
+                }else{
+                    if($balance > 0){ ?>
+                        <div id="hidemessage" style="margin:2% 0%;">Cash on Delivery available with extra charge <strong><?php echo $formattedPrice ?></strong>
+                        </div>
+                <?php }
+                }
+            }
+        }
+        ?>
+
+<!-- Lable End -->
+<div id="checkout" data-bind="scope:'checkout'" class="checkout-container">
+    <div id="checkout-loader" data-role="checkout-loader" class="loading-mask" data-mage-init='{"checkoutLoader": {}}'>
+        <div class="loader">
+            <img src="<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>"
+                 alt="<?php /* @escapeNotVerified */ echo __('Loading...'); ?>"
+                 style="position: absolute;">
+        </div>
+    </div>
+
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <script type="text/x-magento-init">
+        {
+            "#checkout": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */ echo $block->getJsLayout();?>
+            }
+        }
+    </script>
+    <script>
+        window.checkoutConfig = <?php /* @escapeNotVerified */ echo \Zend_Json::encode($block->getCheckoutConfig()); ?>;
+        // Create aliases for customer.js model from customer module
+        window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+        window.customerData = window.checkoutConfig.customerData;
+    </script>
+
+    <script>
+        require([
+            'mage/url',
+            'Magento_Ui/js/block-loader'
+        ], function(url, blockLoader) {
+            blockLoader("<?php /* @escapeNotVerified */ echo $block->getViewFileUrl('images/loader-1.gif'); ?>");
+            return url.setBaseUrl('<?php /* @escapeNotVerified */ echo $block->getBaseUrl();?>');
+        })
+    </script>
+</div>

@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/Label/view/frontend/web/js/configurable/reload.js
