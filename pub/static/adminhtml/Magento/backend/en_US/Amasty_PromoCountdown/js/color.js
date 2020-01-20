@@ -1,0 +1,1 @@
+/var/www/html/app/code/Amasty/PromoCountdown/view/adminhtml/web/js/color.js

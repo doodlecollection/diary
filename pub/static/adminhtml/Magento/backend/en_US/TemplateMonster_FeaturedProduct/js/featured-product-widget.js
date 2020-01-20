@@ -1,0 +1,1 @@
+/var/www/html/app/code/TemplateMonster/FeaturedProduct/view/adminhtml/web/js/featured-product-widget.js

@@ -39829,9 +39829,15 @@ a.action.print {
 	width:81px !important;
 }
 
-.catalog-product-view .fotorama__stage .amlabel-position-wrapper {
-	width: 149px !important;
+.related-available .amasty-label-container {
+    width: 65px !important;
 }
+
+.related-available .amlabel-position-wrapper {
+	width: 66px !important;
+}
+
+
 
 
 @media (max-width: 479px)
